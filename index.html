@@ -1738,19 +1738,23 @@ function renderRoleBar(){
 }
 function mRole(){
   if(!FBUSER) return modal(`<h3>Connexion</h3><div class="muted" style="margin-bottom:12px">Réservé aux marqueurs et aux admins. Les joueurs n'ont pas besoin de compte pour suivre les résultats.</div>
-    <button class="btn" style="width:100%;padding:12px" onclick="loginGoogle()">Continuer avec Google</button>
-    <div class="muted" style="text-align:center;margin:12px 0 4px">ou avec un e-mail</div>
     <input id="lgE" type="email" placeholder="E-mail" autocomplete="email"><input id="lgP" type="password" placeholder="Mot de passe (6 caractères min.)" style="margin-top:6px" autocomplete="current-password">
-    <div class="row" style="margin-top:10px"><button class="btn sec" onclick="loginEmail(false)">Se connecter</button><button class="btn sec" onclick="loginEmail(true)">Créer un compte</button></div>
-    <button class="ss-all" style="margin-top:10px" onclick="resetPwd()">Mot de passe oublié ?</button>`);
+    <div class="row" style="margin-top:10px"><button class="btn" onclick="loginEmail(false)">Se connecter</button><button class="btn sec" onclick="loginEmail(true)">Créer un compte</button></div>
+    <button class="ss-all" style="margin-top:10px" onclick="resetPwd()">Mot de passe oublié ?</button>
+    <div class="muted" style="text-align:center;margin:14px 0 6px">ou</div>
+    <button class="btn sec" style="width:100%" onclick="loginGoogle()">Continuer avec Google <span class="muted" style="font-size:11px">(ordinateur)</span></button>`);
   modal(`<h3>Mon compte</h3><div class="muted" style="margin-bottom:10px">${esc(FBUSER.displayName||FBUSER.email||"")} · profil <b style="color:var(--acc2)">${ROLE_LABEL[ROLE]}</b>${ROLE==="joueur"?"<br>Un admin doit te passer en Marqueur ou Admin dans ⚙ Accès.":""}</div>
+  ${!FBUSER.emailVerified?`<div class="note">📧 Ton e-mail n'est pas encore confirmé. Ouvre le lien reçu par e-mail (regarde les spams), puis touche « J'ai confirmé ».</div><div class="row" style="margin-bottom:10px"><button class="btn" onclick="checkVerif()">J'ai confirmé</button><button class="btn sec" onclick="resendVerif()">Renvoyer l'e-mail</button></div>`:""}
   ${ROLE!=="joueur"?`<div class="muted" style="margin-bottom:6px">Voir le site en tant que :</div>${["joueur","marqueur","admin"].filter(r=>RANK[r]<=RANK[ROLE]).map(r=>`<button class="btn ${effRole()===r?"":"sec"}" style="width:100%;margin-bottom:8px" onclick="closeModal();setViewRole('${r}')">${ROLE_LABEL[r]}</button>`).join("")}`:""}
   <button class="btn dng" style="width:100%;margin-top:6px" onclick="closeModal();AUTH.signOut()">Se déconnecter</button>`);
 }
 function authErr(e){const c=e?.code||"";toast(c.includes("wrong-password")||c.includes("invalid-credential")?"E-mail ou mot de passe incorrect":c.includes("email-already")?"Ce compte existe déjà : connecte-toi":c.includes("weak-password")?"Mot de passe trop court (6 caractères min.)":c.includes("popup")?"Fenêtre de connexion fermée ou bloquée":c.includes("unauthorized-domain")?"Domaine non autorisé dans Firebase (Authentication → Settings)":"Connexion impossible ("+c+")",4500)}
 async function loginGoogle(){try{await AUTH.signInWithPopup(new firebase.auth.GoogleAuthProvider());closeModal()}catch(e){authErr(e)}}
 async function loginEmail(create){const e=document.getElementById("lgE").value.trim(),p=document.getElementById("lgP").value;if(!e||!p)return toast("E-mail et mot de passe requis");
-  try{if(create)await AUTH.createUserWithEmailAndPassword(e,p);else await AUTH.signInWithEmailAndPassword(e,p);closeModal()}catch(err){authErr(err)}}
+  try{if(create){const c=await AUTH.createUserWithEmailAndPassword(e,p);try{await c.user.sendEmailVerification()}catch(x){}closeModal();toast("Compte créé : ouvre le lien reçu par e-mail pour le confirmer",6000);setTimeout(mRole,400)}
+  else{await AUTH.signInWithEmailAndPassword(e,p);closeModal()}}catch(err){authErr(err)}}
+async function resendVerif(){try{await AUTH.currentUser.sendEmailVerification();toast("E-mail de confirmation renvoyé (regarde aussi les spams)",5000)}catch(e){authErr(e)}}
+async function checkVerif(){try{await AUTH.currentUser.reload();await AUTH.currentUser.getIdToken(true);FBUSER=AUTH.currentUser;computeRole();closeModal();render();toast(FBUSER.emailVerified?"E-mail confirmé ✅":"Pas encore confirmé : ouvre le lien reçu par e-mail",4000)}catch(e){authErr(e)}}
 async function resetPwd(){const e=document.getElementById("lgE").value.trim();if(!e)return toast("Écris ton e-mail d'abord");try{await AUTH.sendPasswordResetEmail(e);toast("E-mail de réinitialisation envoyé")}catch(err){authErr(err)}}
 function vAcces(){
   const ids=Object.keys(members).sort((a,b)=>(members[b].seen||0)-(members[a].seen||0));
