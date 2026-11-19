@@ -2310,11 +2310,12 @@ if(!SNAP)(async()=>{
     DB=firebase.firestore(); AUTH=firebase.auth();
     try{await DB.enablePersistence({synchronizeTabs:true})}catch(e){}
   }catch(e){DB=null;loadNote="Configuration Firebase manquante";render();return}
-  loadTimer=setTimeout(()=>{loadNote="Les données mettent du temps à arriver… vérifie ta connexion.";render()},10000);
-  const done=()=>{if(loaded.p&&loaded.t){clearTimeout(loadTimer);if(loadNote.startsWith("Les données"))loadNote=""}scheduleRender();maybeHome()};
+  loadTimer=setTimeout(()=>{if(!loaded.p||!loaded.t){loaded.p=loaded.t=true;loadNote="Connexion lente : les données affichées peuvent ne pas être à jour.";scheduleRender()}},8000);
+  const done=(fresh)=>{if(loaded.p&&loaded.t){clearTimeout(loadTimer);if(fresh&&loadNote.startsWith("Connexion lente"))loadNote=""}scheduleRender();maybeHome()};
   const err=e=>{clearTimeout(loadTimer);loadNote="Erreur de chargement : "+(e?.code||"inconnue");loaded.p=loaded.t=true;render()};
-  DB.collection("players").onSnapshot(s=>{players={};s.docs.forEach(d=>players[d.id]=clone(d.data()));if(!s.metadata.fromCache)loaded.p=true;else loaded.p=loaded.p||s.size>0;done()},err);
-  DB.collection("tournaments").onSnapshot(s=>{tRaw={};s.docs.forEach(d=>tRaw[d.id]=clone(d.data()));mergeAll();if(!s.metadata.fromCache)loaded.t=true;else loaded.t=loaded.t||s.size>0;done()},err);
+  const MD={includeMetadataChanges:true};
+  DB.collection("players").onSnapshot(MD,s=>{players={};s.docs.forEach(d=>players[d.id]=clone(d.data()));if(!s.metadata.fromCache)loaded.p=true;else loaded.p=loaded.p||s.size>0;done(!s.metadata.fromCache)},err);
+  DB.collection("tournaments").onSnapshot(MD,s=>{tRaw={};s.docs.forEach(d=>tRaw[d.id]=clone(d.data()));mergeAll();if(!s.metadata.fromCache)loaded.t=true;else loaded.t=loaded.t||s.size>0;done(!s.metadata.fromCache)},err);
   DB.collection("scores").onSnapshot(s=>{scoresMap={};s.docs.forEach(d=>scoresMap[d.id]=clone(d.data()));mergeAll();scheduleRender()},()=>{});
   DB.doc("config/main").onSnapshot(s=>{cfgDoc=s.exists?clone(s.data()):{};loaded.c=true;scheduleRender()},()=>{});
   DB.doc("config/roles").onSnapshot(s=>{ROLES=s.exists?clone(s.data()):{};computeRole();scheduleRender()},()=>{});
