@@ -218,6 +218,7 @@ h1{font-size:22px!important;white-space:nowrap}
 .rolebtn{flex:none;display:flex;align-items:center;gap:5px;background:rgba(25,23,22,.9);border:1px solid #3a332d;border-radius:999px;padding:5px 11px;color:var(--txt);font:500 12px Oswald,Inter,sans-serif;text-transform:uppercase;letter-spacing:.4px;cursor:pointer}
 .rolebtn{width:36px;height:36px;padding:0!important;justify-content:center;border-radius:50%!important}
 .rolebtn .ri{font-size:16px}
+.rolebtn.has-av{background:none!important;border:0!important;box-shadow:none!important;overflow:visible}.rolebtn .lvb{display:none}
 .rolebtn.ro-admin{border-color:var(--acc);box-shadow:0 0 10px rgba(255,138,0,.35)}
 .rolebtn.ro-marq{border-color:var(--acc2)}
 .tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px}
@@ -414,6 +415,7 @@ nav button.on .livedot{background:#7a0d05}
 .fr-f11.frx{box-shadow:0 0 12px #fff,0 0 30px rgba(56,189,248,.85),0 3px 7px rgba(0,0,0,.6),inset 0 2px 1px rgba(255,255,255,.8),inset 0 -3px 3px rgba(0,0,0,.4);animation:frglow 1.6s ease-in-out infinite}
 .fx{position:absolute;pointer-events:none}
 .fx.lvb{z-index:6;left:50%;bottom:-7%;transform:translateX(-50%);min-width:1.5em;padding:0 .3em;line-height:1.25em;border-width:1.5px!important;border-radius:999px;text-align:center;font-family:'Barlow Condensed',sans-serif;font-weight:800;color:#141210;background:#9aa3ad;border:2px solid #141210;box-shadow:0 2px 3px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.55)}
+.lvb.lv-f14{}
 .lvb.lb0{background:linear-gradient(#d1d5db,#9aa3ad 60%,#6b737c)}
 .lvb.lb1{background:linear-gradient(#f0b07a,#cd7f32 55%,#8a4b1c);color:#2b1406}
 .lvb.lb2{background:linear-gradient(#fff,#d6dbe1 50%,#8a929b);color:#1f2937;box-shadow:0 2px 3px rgba(0,0,0,.55),inset 0 1px 0 #fff,0 0 5px rgba(255,255,255,.5)}
@@ -423,9 +425,17 @@ nav button.on .livedot{background:#7a0d05}
 .lvb.lb6{background:linear-gradient(90deg,#ef4444,#f97316,#facc15,#22c55e,#06b6d4,#a855f7,#ef4444);background-size:300% 100%;color:#fff;text-shadow:0 1px 1px #000,0 0 4px #000;border-color:#fff!important;box-shadow:0 0 8px #fff,0 0 16px #a855f7;animation:lbrain 2.5s linear infinite,lbpulse 1.8s ease-in-out infinite}
 @keyframes lbrain{to{background-position:300% 0}}@keyframes lbpulse{50%{filter:brightness(1.3)}}
 .pa-c:has(.fr-f13) .pa-crown{visibility:hidden}.pa-c:has(.fr-f13) .avr{margin-top:8px}
-.avr.fr-f11,.avr.fr-f12,.avr.fr-f13{isolation:isolate}
+.avr.fr-f11,.avr.fr-f12,.avr.fr-f13,.avr.fr-f14{isolation:isolate}
+.avr.fr-f14{background:#0b0a09}.avr.fr-f14:before{content:"";background:conic-gradient(#ff7a1a 0 30deg,#141210 30deg 45deg,#ffcf3f 45deg 75deg,#141210 75deg 90deg,#ff7a1a 90deg 120deg,#141210 120deg 135deg,#ffcf3f 135deg 165deg,#141210 165deg 180deg,#ff7a1a 180deg 210deg,#141210 210deg 225deg,#ffcf3f 225deg 255deg,#141210 255deg 270deg,#ff7a1a 270deg 300deg,#141210 300deg 315deg,#ffcf3f 315deg 345deg,#141210 345deg 360deg);animation:frspin 6s linear infinite}
+.avr.fr-f14:after{content:"";background:radial-gradient(closest-side,transparent 82%,rgba(255,207,63,.95) 86%,transparent 90%),linear-gradient(115deg,transparent 35%,rgba(255,255,255,.85) 48%,transparent 60%);background-size:100% 100%,250% 100%;animation:frshine2 2.2s ease-in-out infinite}
+.fr-f14.frx{box-shadow:0 0 14px #ff7a1a,0 0 30px rgba(255,122,26,.7),0 3px 7px rgba(0,0,0,.6),inset 0 2px 1px rgba(255,255,255,.6),inset 0 -3px 3px rgba(0,0,0,.5);animation:frboss 2s ease-in-out infinite}
+.fx.halo.h14{inset:-16%;background:conic-gradient(#ff7a1a,#ffcf3f,#141210,#ff7a1a,#ffcf3f,#141210,#ff7a1a);opacity:.8;animation-duration:4s}
+.fx.orbit{inset:-14%;z-index:7;animation:frspin 3.2s linear infinite}.fx.orbit em{position:absolute;top:-4%;left:50%;transform:translateX(-50%);font-size:var(--ob,14px);line-height:1;font-style:normal;filter:drop-shadow(0 0 4px #ff7a1a)}
+.avr.fr-f14 .fx.spk{filter:drop-shadow(0 0 3px #fff) drop-shadow(0 0 6px #ff7a1a)}
+@keyframes frboss{50%{box-shadow:0 0 22px #ffcf3f,0 0 44px rgba(255,122,26,.95),0 3px 7px rgba(0,0,0,.6),inset 0 2px 1px rgba(255,255,255,.7),inset 0 -3px 3px rgba(0,0,0,.5)}}
 .fx.halo{inset:-16%;border-radius:50%;z-index:-1;background:conic-gradient(#fff,#a5f3fc,#f0abfc,#fde68a,#a7f3d0,#bfdbfe,#fff);filter:blur(5px);opacity:.85;animation:frspin 5s linear infinite}
 .fx.halo.h12{inset:-12%;background:conic-gradient(#a855f7,#f0abfc,#ffcf3f,#a855f7,#6d28d9,#ffcf3f,#a855f7);opacity:.7}
+.fx.adm-ring{inset:0;z-index:5;width:100%;height:100%;overflow:visible}
 .fx.halo.h13{inset:-20%;background:conic-gradient(#fff7cc,#ffcf3f,#f59e0b,#fff,#ffcf3f,#b45309,#fff7cc);opacity:.9;animation-duration:3.5s}
 .fx.spk{z-index:4;width:22%;height:22%;background:#fff;clip-path:polygon(50% 0,60% 40%,100% 50%,60% 60%,50% 100%,40% 60%,0 50%,40% 40%);filter:drop-shadow(0 0 3px #fff) drop-shadow(0 0 6px #7dd3fc);transform:scale(0);animation:frspk 1.8s ease-in-out infinite}
 .fx.spk.s0{top:-8%;left:12%}.fx.spk.s1{top:6%;right:-8%;animation-delay:.3s}.fx.spk.s2{bottom:-6%;right:14%;animation-delay:.6s}.fx.spk.s3{bottom:10%;left:-8%;animation-delay:.9s}.fx.spk.s4{top:-12%;right:30%;width:14%;height:14%;animation-delay:1.2s}.fx.spk.s5{top:44%;right:-12%;width:14%;height:14%;animation-delay:1.5s}
@@ -488,6 +498,12 @@ nav button.on .livedot{background:#7a0d05}
 .pu-pts{font:800 30px 'Barlow Condensed';margin:8px 0 4px}.pu-big{font:800 26px 'Barlow Condensed';text-transform:uppercase;color:var(--acc2);margin:8px 0 4px}
 .pu .up{color:var(--win)}.pu .dn{color:var(--loss)}
 .pu-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-top:12px}.pu-grid>div{background:#23201d;border-radius:10px;padding:8px 2px}.pu-grid b{display:block;font:800 22px 'Barlow Condensed'}.pu-grid small{font-size:11px;color:var(--mut)}
+.todo{border-color:rgba(255,80,60,.55)}.todo.ok{display:flex;align-items:center;gap:12px;border-color:rgba(88,214,141,.45)}.todo.ok>span{font-size:24px}
+.todo-n,.todo-dot{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 5px;border-radius:99px;background:#ef4444;color:#fff;font:800 12px Inter;vertical-align:2px}
+.todo-dot{position:absolute;top:0;right:-2px;min-width:17px;height:17px;font-size:10px;border:2px solid #141210}nav button.adm{position:relative;overflow:visible}
+nav button.navlive:not(.on){border-color:#ff7a1a;box-shadow:0 0 10px rgba(255,122,26,.45);animation:navlive 1.6s ease-in-out infinite}@keyframes navlive{50%{box-shadow:0 0 16px rgba(255,170,40,.75)}}
+.todo-it{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:#1d1a17;border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-top:6px;color:var(--txt);font:500 14px Inter;cursor:pointer}
+.todo-it>span:nth-child(2){flex:1}.todo-ic{font-size:18px}
 .pj-head{display:flex;align-items:center;gap:14px;margin:4px 0 6px}.pj-head h2{margin:0}
 .nm{display:block;width:100%;text-align:left;margin:10px 0 0;padding:11px 14px;border-radius:12px;border:1px solid rgba(255,194,58,.55);background:linear-gradient(90deg,rgba(255,194,58,.13),rgba(255,138,0,.04));color:var(--txt);font:inherit}
 .nm-ask{cursor:pointer;font-size:14px}.nm-ask b{color:var(--acc2)}
@@ -1008,7 +1024,7 @@ const ADMIN_TILES=[["joueurs","👥","Joueurs","Ajouter, modifier, fusionner les
 function vAdmin(){
   const C=cfg(), live=sortedTournaments().filter(t=>t.status==="live").length;
   app.innerHTML=`<h2>Admin</h2><div class="muted" style="margin-bottom:12px">${Object.keys(players).length} joueurs · ${Object.keys(tournaments).length} tournois · saison ${esc(sLab(C.season))}${live?` · <b style="color:var(--acc2)">${live} en cours</b>`:""}</div>
-  ${avatarReqHTML()}<div class="tiles">${ADMIN_TILES.map(([k,ic,t,d])=>`<button class="tile" onclick="go({v:'${k}'})"><span class="ti">${ic}</span><b>${t}</b><small>${d}</small></button>`).join("")}</div>
+  ${todoHTML()}${avatarReqHTML()}<div class="tiles">${ADMIN_TILES.map(([k,ic,t,d])=>`<button class="tile" onclick="go({v:'${k}'})"><span class="ti">${ic}</span><b>${t}</b><small>${d}</small></button>`).join("")}</div>
   <div class="muted" style="margin-top:12px">Les tournois se créent et se gèrent depuis l'onglet <b>Tournois</b>.</div>
   ${isSite()?"":`<div class="card adminbox" style="margin-top:14px"><h3>🧪 Tester le jour de tournoi</h3><div class="muted" style="font-size:13px;margin-bottom:8px">Crée un faux tournoi « en cours » aujourd'hui (8 équipes, 2 terrains, horaires autour de maintenant) et te met dans une équipe pour voir le tableau de bord et les pop-ups côté joueur. À supprimer ensuite.</div>
   <button class="btn" onclick="simTourDay()">Lancer le test</button></div>`}`;
@@ -1062,15 +1078,23 @@ function render(){
   document.getElementById("subtitle").innerHTML=`<b class="season">Saison ${esc(sLab(C.season))}</b><span class="recap">`+esc(SNAP?`mis à jour le ${new Date(SNAP.exportedAt).toLocaleString("fr-FR",{day:"numeric",month:"long",hour:"2-digit",minute:"2-digit"})}`:!DB?"Données indisponibles":loadNote||(()=>{const cur=Object.values(tournaments).filter(t=>seasonOf(t,C)===C.season),nS=cur.filter(isSession).length,nT=cur.length-nS,pl=(n,w)=>`${n} ${w}${n>1?"s":""}`;return `${pl(Object.keys(players).length,"joueur")} · ${pl(nT,"tournoi")} · ${pl(nS,"session")}`})())+`</span>`;
   renderRoleBar();
   const lt=liveTournament();
-  const views=lt?[["tournois",'<span class="livedot"></span>'+(isSession(lt)?"Session":"Tournoi")],["classement","Classement"],["reglement","Règles"]]:[["classement","Classement"],["tournois","Tournois"],["reglement","Règles"]];
-  if(scorerOn()) views.push(["table","⏱ Table"],["session","🏀 Session"]);
+  /* Menu : l'événement en direct (tournoi ou session) passe en premier avec une flamme, sans doublon */
+  const ls=lt&&isSession(lt), sc=scorerOn();
+  const items=[];
+  if(lt) items.push({k:"live",l:`🔥 ${ls?"Session":"Tournoi"}`,go:ls&&sc?"go({v:'session'})":`go({v:'tournoi',id:'${lt.id}'})`,live:1});
+  items.push({k:"classement",l:"🏆 Classement"});
+  if(!lt||ls) items.push({k:"tournois",l:"🗓️ Tournois"});
+  if(!ls) items.push({k:"session",l:"🏀 Session"});
+  items.push({k:"reglement",l:"📖 Règles"});
+  if(sc) items.push({k:"table",l:"⏱️ Table"});
+  const onLive=lt&&((route.v==="tournoi"&&route.id===lt.id)||(ls&&route.v==="session"));
+  const cur=onLive?"live":route.v==="joueur"?"classement":route.v==="tournoi"?"tournois":ADMIN_VIEWS.includes(route.v)?"admin":route.v;
   const aviews=adminOn()?[["admin",""]]:[];
-  const cur=route.v==="joueur"?"classement":route.v==="tournoi"?"tournois":ADMIN_VIEWS.includes(route.v)?"admin":route.v;
-  nav.innerHTML=views.map(([k,l])=>`<button class="${cur===k?"on":""}" onclick="${k==="tournois"&&lt?`go({v:'tournoi',id:'${lt.id}'})`:`go({v:'${k}'})`}">${l}</button>`).join("")+aviews.map(([k,l])=>`<button class="adm ${cur===k?"on":""}" title="Admin" aria-label="Admin" onclick="go({v:'${k}'})">⚙</button>`).join("");
+  nav.innerHTML=items.map(x=>`<button class="${cur===x.k?"on":""} ${x.live?"navlive":""}" onclick="${x.go||`go({v:'${x.k}'})`}">${x.l}</button>`).join("")+aviews.map(([k,l])=>`<button class="adm ${cur===k?"on":""}" title="Admin" aria-label="Admin" onclick="go({v:'${k}'})">⚙${todoCount()?`<span class="todo-dot">${todoCount()}</span>`:""}</button>`).join("");
   nav.querySelector("button.on")?.scrollIntoView({inline:"nearest",block:"nearest"});
   if(!DB&&!SNAP){app.innerHTML=`<div class="empty">Impossible d'accéder aux données.<br>Connecte-toi à ton compte Claude pour voir le classement.</div>`;return}
   if(!loaded.p||!loaded.t){app.innerHTML=`<div class="empty">${loadNote||"Chargement des données…"}</div>`;return}
-  if(((route.v==="admin"||ADMIN_VIEWS.includes(route.v))&&!adminOn())||((route.v==="table"||route.v==="session")&&!scorerOn())){route={v:"classement",g:"H"}}
+  if(((route.v==="admin"||ADMIN_VIEWS.includes(route.v))&&!adminOn())||(route.v==="table"&&!scorerOn())){route={v:"classement",g:"H"}}
   ({classement:vClass,tournois:vTourn,tournoi:vTournoi,joueur:vJoueur,simulateur:vSimu,reglement:vRegles,joueurs:vJoueurs,reglages:vReglages,donnees:vDonnees,table:vTable,calibrage:vCalib,visuels:vVisuels,acces:vAcces,admin:vAdmin,session:vSession,duel:vDuel})[route.v]();
   if(ADMIN_VIEWS.includes(route.v)) app.insertAdjacentHTML("afterbegin",`<button class="back" onclick="go({v:'admin'})">← Admin</button>`);
   if(route.v!=="table"&&route.v!=="session"){const ab=annBannerHTML();if(ab)app.insertAdjacentHTML("afterbegin",ab)}
@@ -1285,7 +1309,7 @@ function tournamentTile(T){
     ${pod}${prog}</div>`;
 }
 function vTourn(){
-  const C=cfg(), A=adminOn(), all=sortedTournaments(), cur=all.filter(t=>seasonOf(t,C)===C.season);
+  const C=cfg(), A=adminOn(), all=sortedTournaments().filter(t=>!isSession(t)), cur=all.filter(t=>seasonOf(t,C)===C.season);
   const block=(title,list)=>list.length?`<h2>${title}</h2>`+list.map(tournamentTile).join(""):"";
   const pastS=seasonOrder(C).filter(s=>s!==C.season&&all.some(t=>seasonOf(t,C)===s)).reverse();
   app.innerHTML=(A?`<div class="row" style="gap:8px"><span style="flex:none"><button class="btn" onclick="mTournament()">+ Nouveau tournoi</button></span>${isSite()?"":`<span style="flex:none"><button class="btn sec" onclick="simTourDay()">🧪 Simuler un tournoi</button></span>`}</div>`:"")+
@@ -1293,7 +1317,7 @@ function vTourn(){
     block("À venir",cur.filter(t=>t.status==="planned"))+
     block("Terminés",cur.filter(t=>t.status==="done").reverse())+
     (!cur.length?`<div class="empty">Aucun tournoi cette saison pour l'instant.</div>`:"")+
-    (pastS.length?`<h2>Saisons précédentes</h2>`+pastS.map(S=>{const l=all.filter(t=>seasonOf(t,C)===S).reverse();return `<details class="card"><summary class="bold" style="cursor:pointer">Saison ${esc(sLab(S))} · ${l.filter(x=>!isSession(x)).length} tournoi(s) · ${l.filter(isSession).length} session(s)</summary><div style="margin-top:10px">${l.map(tournamentTile).join("")}</div></details>`}).join(""):"");
+    (pastS.length?`<h2>Saisons précédentes</h2>`+pastS.map(S=>{const l=all.filter(t=>seasonOf(t,C)===S).reverse();return `<details class="card"><summary class="bold" style="cursor:pointer">Saison ${esc(sLab(S))} · ${l.length} tournoi(s)</summary><div style="margin-top:10px">${l.map(tournamentTile).join("")}</div></details>`}).join(""):"");
 }
 
 /* ---------- Détail tournoi ---------- */
@@ -1558,7 +1582,7 @@ function mPlayer(id){
   <label style="margin-top:14px">Fusionner avec une autre fiche (doublon)</label><div class="row"><select id="mgW" style="flex:3"><option value="">Choisir…</option>${Object.keys(players).filter(x=>x!==id).sort((a,b)=>players[a].name.localeCompare(players[b].name)).map(x=>`<option value="${x}">${esc(players[x].name)}</option>`).join("")}</select><button class="btn sm sec" style="flex:none" onclick="const w=document.getElementById('mgW').value;if(w)mMerge('${id}',w)">Fusionner</button></div>
   ${used?`<div class="muted" style="margin-top:12px">Joueur inscrit dans au moins un tournoi : suppression impossible.</div>`:`<button class="btn dng" style="margin-top:12px;width:100%" onclick="delPlayer('${id}')">Supprimer ce joueur</button>`}`);
 }
-async function savePlayerEdit(id){const r=npRead("ep",id);if(!r)return;closeModal();await saveP(id,{...players[id],...r,g:document.getElementById("epG")?.value||players[id].g})}
+async function savePlayerEdit(id){const r=npRead("ep",id);if(!r)return;const g=document.getElementById("epG")?.value||players[id].g;closeModal();await saveP(id,{...players[id],...r,g});toast("Joueur modifié")}
 function delPlayer(id){closeModal();delete players[id];scheduleRender();delDoc("players/"+id)}
 
 /* ---------- Admin : tournoi (création / édition) ---------- */
@@ -1958,9 +1982,14 @@ const effRole=()=>RANK[viewRole]<=RANK[ROLE]?viewRole:ROLE;
 const adminOn=()=>effRole()==="admin";
 const scorerOn=()=>effRole()!=="joueur";
 function setViewRole(r){viewRole=r;try{localStorage.setItem("view-role",r)}catch(e){}if(!scorerOn()&&route.v==="table")route={v:"classement",g:"H"};render()}
+/* Avatar du joueur (icône/photo + contour) à la place du 👤 */
+function headIcon(){
+  const id=(typeof myPid==="function"&&myPid())||MYP||"", A=id&&AVATARS[id];
+  return A&&(A.img||A.obj&&ICON_AV.has(A.obj))&&players[id]?avatarHTML(id,34):`<span class="ri">👤</span>`;
+}
 function renderRoleBar(){
   const el=document.getElementById("rolebtn"); if(!el) return;
-  el.style.display="flex"; el.innerHTML=`<span class="ri">👤</span>`;
+  el.style.display="flex"; el.innerHTML=headIcon(); el.classList.toggle("has-av",!el.querySelector(".ri"));
   el.title=FBUSER?("Mon compte · vue "+ROLE_LABEL[effRole()]):"Connexion / créer un compte";
   el.classList.toggle("ro-admin",!!FBUSER&&effRole()==="admin"); el.classList.toggle("ro-marq",!!FBUSER&&effRole()==="marqueur");
 }
@@ -2567,21 +2596,22 @@ const achOf0=id=>{const s=st[id];if(!s)return new Set();return new Set(ACH.filte
 ACH.forEach(a=>{ICON_UNLOCK[a.ico]={ach:a.k}});
 /* Contours d'avatar à débloquer (niveau ou exploit) */
 const FRAMES=[{k:"f0",n:"Simple"},{k:"f1",n:"Orange",lvl:2},{k:"f2",n:"Double",lvl:4},{k:"f3",n:"Comics",lvl:6},{k:"f4",n:"Néon",lvl:8},{k:"f5",n:"Arc-en-ciel",lvl:20},
-  {k:"f6",n:"Bronze",ach:"third"},{k:"f7",n:"Argent",ach:"final"},{k:"f8",n:"Or",ach:"champ"},{k:"f9",n:"Flammes",ach:"s5"},{k:"f10",n:"Éclair",ach:"upset"},{k:"f11",n:"Diamant",ach:"dyn"},{k:"f12",n:"Saison",ach:"spod"},{k:"f13",n:"Couronne",ach:"schamp"}];
+  {k:"f6",n:"Bronze",ach:"third"},{k:"f7",n:"Argent",ach:"final"},{k:"f8",n:"Or",ach:"champ"},{k:"f9",n:"Flammes",ach:"s5"},{k:"f10",n:"Éclair",ach:"upset"},{k:"f11",n:"Diamant",ach:"dyn"},{k:"f12",n:"Saison",ach:"spod"},{k:"f13",n:"Couronne",ach:"schamp"},{k:"f14",n:"Le Boss",admin:true}];
 /* Éléments décoratifs en plus du contour (halo, étincelles, couronne) */
 function frameExtras(fr){
   const spk=n=>Array.from({length:n},(_,i)=>`<span class="fx spk s${i}"></span>`).join("");
   if(fr==="f11") return `<span class="fx halo"></span>${spk(6)}`;
   if(fr==="f12") return `<span class="fx halo h12"></span>${spk(3)}`;
+  if(fr==="f14"){const i="ar"+(++avN);return `<span class="fx halo h14"></span>${spk(4)}<svg class="fx adm-ring" viewBox="0 0 100 100" aria-hidden="true"><defs><path id="${i}" d="M 8.5 50 A 41.5 41.5 0 0 1 91.5 50"/></defs><path d="M 20 26 A 40 40 0 0 1 80 26" fill="none" stroke="#141210" stroke-width="12" stroke-linecap="round"/><text font-family="Arial Black,Impact,sans-serif" font-weight="900" font-size="10" letter-spacing="2" fill="#ffcf3f" stroke="#141210" stroke-width="1.8" paint-order="stroke"><textPath href="#${i}" startOffset="50%" text-anchor="middle" dominant-baseline="central">ADMIN</textPath></text></svg>`}
   if(fr==="f13") return `<span class="fx halo h13"></span>${spk(6)}<span class="fx crown"><svg viewBox="0 0 40 26"><path d="M3 23 L5 8 L13 15 L20 3 L27 15 L35 8 L37 23 Z" fill="#ffcf3f" stroke="#141210" stroke-width="2.4" stroke-linejoin="round"/><circle cx="20" cy="4" r="2.6" fill="#ef4444" stroke="#141210" stroke-width="1.4"/><rect x="5" y="19" width="30" height="4" fill="#e0a100"/></svg></span>`;
   return "";
 }
 const FRAME_BY=Object.fromEntries(FRAMES.map(f=>[f.k,f]));
 /* Condition de déblocage : {lvl} ou {ach} — renvoie le texte affiché quand c'est verrouillé */
 const reqOf=x=>typeof x==="number"?{lvl:x}:(x||{lvl:1});
-const reqOk=(r,lvl,ach)=>r.ach?ach.has(r.ach):lvl>=(r.lvl||1);
-const reqTxt=r=>r.ach?`Exploit « ${ACH_BY[r.ach].n} » : ${ACH_BY[r.ach].d.toLowerCase()}`:`Niveau ${r.lvl}`;
-const reqTag=r=>r.ach?"🏅":String(r.lvl);
+const reqOk=(r,lvl,ach)=>r.admin?false:r.ach?ach.has(r.ach):lvl>=(r.lvl||1);
+const reqTxt=r=>r.admin?"Réservé à l'administrateur 👑":r.ach?`Exploit « ${ACH_BY[r.ach].n} » : ${ACH_BY[r.ach].d.toLowerCase()}`:`Niveau ${r.lvl}`;
+const reqTag=r=>r.admin?"👑":r.ach?"🏅":String(r.lvl);
 function achCardHTML(id){
   const s=st[id]; if(!s||!s.gamesAll) return ""; const got=achOf(id);
   return `<div class="card"><h3>🏅 Exploits <span class="muted" style="font-weight:400;font-size:13px;text-transform:none">${got.size}/${ACH.length}</span></h3>
@@ -2595,7 +2625,7 @@ function unlockedOf(id){
   const lvl=playerLvl(id), ach=achOf(id), out=[];
   ICON_AV.items.forEach(x=>{if(reqOk(reqOf(ICON_UNLOCK[x.key]||1),lvl,ach))out.push("i:"+x.key)});
   ICON_AV.styles.forEach((n,i)=>{if(lvl>=STYLE_UNLOCK[i])out.push("s:"+i)});
-  FRAMES.forEach(f=>{if(f.ach?ach.has(f.ach):lvl>=(f.lvl||1))out.push("f:"+f.k)});
+  FRAMES.forEach(f=>{if(!f.admin&&(f.ach?ach.has(f.ach):lvl>=(f.lvl||1)))out.push("f:"+f.k)});
   return out;
 }
 const lsGet=k=>{try{return JSON.parse(localStorage.getItem(k)||"null")}catch(e){return null}};
@@ -2924,18 +2954,19 @@ function mCreator(id){
 }
 function ccRefresh(){
   const prev=document.getElementById("ccPrev");
-  if(prev) prev.innerHTML=`<div class="avr ${CC.fr!=="f0"?"frx ":""}fr-${CC.fr}" style="width:100%;height:100%;--b:${["f11","f13"].includes(CC.fr)?12:9}px;--bb:9px">${frameExtras(CC.fr)}${CC.obj?`<span class="avs">${ICON_AV.svg(CC.obj,"p"+(++avN),CC.st)}</span>`:CC.img?`<img src="${CC.img}" alt="">`:`<div class="cc-empty">Choisis une icône</div>`}</div>`;
-  const ok=l=>CC.free||reqOk(reqOf(l),CC.lvl,CC.ach);
-  const fb=document.getElementById("ccFr"); if(fb) fb.innerHTML=FRAMES.map(f=>{const r=f.ach?{ach:f.ach}:{lvl:f.lvl||1},o=CC.free||reqOk(r,CC.lvl,CC.ach);
+  if(prev) prev.innerHTML=`<div class="avr ${CC.fr!=="f0"?"frx ":""}fr-${CC.fr}" style="width:100%;height:100%;--ob:22px;--b:${CC.fr==="f14"?16:["f11","f13"].includes(CC.fr)?12:9}px;--bb:9px">${frameExtras(CC.fr)}${CC.obj?`<span class="avs">${ICON_AV.svg(CC.obj,"p"+(++avN),CC.st)}</span>`:CC.img?`<img src="${CC.img}" alt="">`:`<div class="cc-empty">Choisis une icône</div>`}</div>`;
+  const boss=adminOn()&&CC.id===meId();
+  const ok=l=>{const r=reqOf(l);return r.admin?boss:CC.free||reqOk(r,CC.lvl,CC.ach)};
+  const fb=document.getElementById("ccFr"); if(fb) fb.innerHTML=FRAMES.filter(f=>!f.admin||adminOn()).map(f=>{const r=f.admin?{admin:true}:f.ach?{ach:f.ach}:{lvl:f.lvl||1},o=f.admin?boss:CC.free||reqOk(r,CC.lvl,CC.ach);
     return `<button class="cc-fr ${CC.fr===f.k?"on":""} ${o?"":"lock"} ${o&&CC.isNew("f:"+f.k)?"new":""}" onclick="${o?`ccFrame('${f.k}')`:`ccLockedR('${f.k}')`}" title="${esc(f.n)}"><span class="avr ${f.k!=="f0"?"frx ":""}fr-${f.k}" style="width:42px;height:42px;--b:5px;--bb:5px">${o?frameExtras(f.k):""}<i style="font-size:11px">${o?"":"🔒"}</i></span><small>${esc(f.n)}</small>${o&&CC.isNew("f:"+f.k)&&f.k!=="f0"?'<span class="new-b">NEW</span>':""}</button>`}).join("");
   const s=document.getElementById("ccSt"); if(s) s.innerHTML=ICON_AV.styles.map((n,i)=>ok(STYLE_UNLOCK[i])?`<button class="${CC.st===i?"on":""}" onclick="ccStyle(${i})">${esc(n)}${CC.isNew("s:"+i)&&i>0?' <b class="new-t">NEW</b>':""}</button>`:`<button class="lock" onclick="ccLocked(${STYLE_UNLOCK[i]})">🔒 ${esc(n)} <small>niv ${STYLE_UNLOCK[i]}</small></button>`).join("");
-  document.querySelectorAll("#mbox .cc-grid[data-cat]").forEach(g=>{g.innerHTML=ICON_AV.items.filter(x=>x.cat===g.dataset.cat).map(x=>{const l=ICON_UNLOCK[x.key]||1;return ok(l)?`<button class="${CC.obj===x.key?"on":""} ${CC.isNew("i:"+x.key)?"new":""}" title="${esc(x.label)}" aria-label="${esc(x.label)}" onclick="ccObj('${x.key}')">${ICON_AV.svg(x.key,"t"+(++avN),CC.st)}${CC.isNew("i:"+x.key)?'<span class="new-b">NEW</span>':""}</button>`
-    :`<button class="lock" title="${esc(x.label)} : niveau ${l}" aria-label="${esc(x.label)}, débloqué au niveau ${l}" onclick="ccLockedI('${x.key}')">${ICON_AV.svg(x.key,"t"+(++avN),CC.st)}<span class="cc-lk">🔒<b>${reqTag(reqOf(l))}</b></span></button>`}).join("")});
+  document.querySelectorAll("#mbox .cc-grid[data-cat]").forEach(g=>{g.innerHTML=ICON_AV.items.filter(x=>x.cat===g.dataset.cat&&(!(ICON_UNLOCK[x.key]||{}).admin||adminOn())).map(x=>{const l=ICON_UNLOCK[x.key]||1;return ok(l)?`<button class="${CC.obj===x.key?"on":""} ${CC.isNew("i:"+x.key)?"new":""}" title="${esc(x.label)}" aria-label="${esc(x.label)}" onclick="ccObj('${x.key}')">${ICON_AV.svg(x.key,"t"+(++avN),CC.st)}${CC.isNew("i:"+x.key)?'<span class="new-b">NEW</span>':""}</button>`
+    :`<button class="lock" title="${esc(x.label)} : ${esc(reqTxt(reqOf(l)))}" aria-label="${esc(x.label)}, ${esc(reqTxt(reqOf(l)))}" onclick="ccLockedI('${x.key}')">${ICON_AV.svg(x.key,"t"+(++avN),CC.st)}<span class="cc-lk">🔒<b>${reqTag(reqOf(l))}</b></span></button>`}).join("")});
 }
 function ccObj(k){CC.obj=k;ccRefresh()}
 function ccFrame(k){CC.fr=k;ccRefresh()}
 function ccLockedI(k){toast(`${ICON_AV.label(k)} : ${reqTxt(reqOf(ICON_UNLOCK[k]||1))}`,3500)}
-function ccLockedR(k){const f=FRAME_BY[k];toast(`Contour ${f.n} : ${reqTxt(f.ach?{ach:f.ach}:{lvl:f.lvl})}`,3500)}
+function ccLockedR(k){const f=FRAME_BY[k];toast(f.admin?"Contour Le Boss : réservé à ta propre fiche (choisis-la dans « Qui es-tu ? »)":`Contour ${f.n} : ${reqTxt(f.ach?{ach:f.ach}:{lvl:f.lvl})}`,3500)}
 function ccLocked(l,name){toast(`${name?name+" : d":"D"}ébloqué au niveau ${l} (tu es niveau ${CC.lvl})`,3000)}
 function ccStyle(i){CC.st=i;ccRefresh()}
 async function ccSave(){if(!CC.obj&&!CC.img)return toast("Choisis une icône");const id=CC.id,d=CC.obj?{obj:CC.obj,st:CC.st,fr:CC.fr,at:Date.now()}:{...AVATARS[id],fr:CC.fr,at:Date.now()};closeModal();AVATARS[id]=d;scheduleRender();
@@ -2945,9 +2976,9 @@ async function ccSave(){if(!CC.obj&&!CC.img)return toast("Choisis une icône");c
 var AVATARS={}, AVREQ={}, avUnsub=null, avReqUnsub=null, avReqKey="";
 const initials=id=>{const w=String(players[id]?.name||"?").replace(/\s*\(démo\)/i,"").replace(/[^\p{L}\p{N} ]/gu," ").trim().split(/\s+/).filter(Boolean);return ((w.length>1?w[0][0]+w[1][0]:(w[0]||"?").slice(0,2))).toUpperCase()};
 function avatarHTML(id,size,cls=""){let A=AVATARS[id]||{}; if(!A.img&&!A.obj&&cfg().autoAv!==false) A={...autoAvatar(id),...(A.fr?{fr:A.fr}:{})}; const a=A.img;
-  const fr=A.fr&&FRAME_BY[A.fr]?A.fr:null; if(fr&&fr!=="f0") cls="frx fr-"+fr; const b=Math.max(3,Math.round(size*(fr==="f11"||fr==="f13"?.11:fr==="f12"?.1:.085)));
+  const fr=A.fr&&FRAME_BY[A.fr]?A.fr:null; if(fr&&fr!=="f0") cls="frx fr-"+fr; const b=Math.max(3,Math.round(size*(fr==="f14"?.14:fr==="f11"||fr==="f13"?.11:fr==="f12"?.1:.085)));
   const lv=size>=30&&st[id]&&st[id].gamesAll?`<span class="fx lvb ${lvbTier(playerLvl(id))}" style="font-size:${Math.max(8,Math.round(size*.14))}px" title="Niveau ${playerLvl(id)}">${playerLvl(id)}</span>`:"";
-  return `<div class="avr ${cls}" style="width:${size}px;height:${size}px;--b:${b}px;--bb:${b}px">${fr?frameExtras(fr):""}${lv}${a?`<img src="${a}" alt="">`:ICON_AV.has(A.obj)?`<span class="avs">${ICON_AV.svg(A.obj,"a"+(++avN),A.st)}</span>`:`<i style="font-size:${Math.round(size*.36)}px">${esc(initials(id))}</i>`}</div>`}
+  return `<div class="avr ${cls}" style="width:${size}px;height:${size}px;--b:${b}px;--bb:${b}px;--ob:${Math.max(10,Math.round(size*.2))}px">${fr?frameExtras(fr):""}${lv}${a?`<img src="${a}" alt="">`:ICON_AV.has(A.obj)?`<span class="avs">${ICON_AV.svg(A.obj,"a"+(++avN),A.st)}</span>`:`<i style="font-size:${Math.round(size*.36)}px">${esc(initials(id))}</i>`}</div>`}
 /* Avatar automatique (joueurs sans image) : dernière icône débloquée la plus prestigieuse + meilleur contour */
 /* Couleur de la pastille de niveau : de plus en plus « premium » */
 const lvbTier=l=>l>=30?"lb6":l>=25?"lb5":l>=20?"lb4":l>=15?"lb3":l>=10?"lb2":l>=5?"lb1":"lb0";
@@ -3018,9 +3049,28 @@ async function cancelPhotoReq(id){closeModal();delete AVREQ[id];scheduleRender()
 async function approvePhoto(id){const r=AVREQ[id];if(!r)return;AVATARS[id]={img:r.img,at:Date.now()};delete AVREQ[id];scheduleRender();
   await write("avatars/"+id,()=>DB.doc("avatars/"+id).set({img:r.img,at:Date.now()}));await delDoc("avatarReq/"+id);toast("Photo validée")}
 async function rejectPhoto(id){delete AVREQ[id];scheduleRender();await delDoc("avatarReq/"+id);toast("Photo refusée")}
+/* ---------- « À faire » de l'admin ---------- */
+function todoItems(){
+  if(!adminOn()) return [];
+  const out=[], T=Object.entries(tournaments).map(([id,x])=>({...x,id})).filter(x=>x.status!=="done");
+  const nPh=Object.keys(AVREQ).filter(id=>players[id]).length;
+  if(nPh) out.push({ic:"📷",n:nPh,t:`photo${nPh>1?"s":""} de profil à valider`,go:"go({v:'admin'});setTimeout(()=>document.querySelector('.todo-ph')?.scrollIntoView({behavior:'smooth'}),100)"});
+  const nCl=Object.keys(members).filter(id=>members[id]?.claim).length;
+  if(nCl) out.push({ic:"🔗",n:nCl,t:`demande${nCl>1?"s":""} de fiche joueur`,go:"go({v:'acces'})"});
+  T.forEach(x=>{const n=pendingRegs(x.id).length;if(n)out.push({ic:"📝",n,t:`inscription${n>1?"s":""} à valider · ${x.name}`,go:`go({v:'tournoi',id:'${x.id}',tab:'equipes'})`})});
+  T.forEach(x=>{if(!tPrice(x))return;const tm=(x.teams||[]).filter(t=>teamRest(x,t)>0);if(tm.length){const r=tm.reduce((s,t)=>s+teamRest(x,t),0);out.push({ic:"💶",n:tm.length,t:`équipe${tm.length>1?"s":""} n'${tm.length>1?"ont":"a"} pas tout réglé (${eur(r)}) · ${x.name}`,go:`go({v:'tournoi',id:'${x.id}',tab:'equipes'})`})}});
+  T.filter(x=>x.status==="live").forEach(x=>{const late=Object.values(PRES).filter(p=>p.tid===x.id&&p.late&&!p.in&&Date.now()-(p.lateAt||0)<3600e3).length;if(late)out.push({ic:"⏰",n:late,t:`retard${late>1?"s":""} signalé${late>1?"s":""} · ${x.name}`,go:`go({v:'tournoi',id:'${x.id}'})`})});
+  return out;
+}
+const todoCount=()=>{try{return todoItems().reduce((s,x)=>s+x.n,0)}catch(e){return 0}};
+function todoHTML(){
+  const L=todoItems();
+  if(!L.length) return `<div class="card todo ok"><span>✅</span><div><b>Rien à faire</b><div class="muted" style="font-size:12px">Aucune photo, demande, inscription ni paiement en attente.</div></div></div>`;
+  return `<div class="card todo"><h3>🔔 À faire <span class="todo-n">${L.reduce((s,x)=>s+x.n,0)}</span></h3>${L.map(x=>`<button class="todo-it" onclick="${x.go}"><span class="todo-ic">${x.ic}</span><span><b>${x.n}</b> ${esc(x.t)}</span><span class="muted">›</span></button>`).join("")}</div>`;
+}
 function avatarReqHTML(){
   if(!adminOn()) return ""; const ids=Object.keys(AVREQ).filter(id=>players[id]); if(!ids.length) return "";
-  return `<div class="card adminbox"><h3>📷 Photos à valider (${ids.length})</h3>${ids.map(id=>`<div class="reg-item" style="display:flex;align-items:center;gap:12px">
+  return `<div class="card adminbox todo-ph"><h3>📷 Photos à valider (${ids.length})</h3>${ids.map(id=>`<div class="reg-item" style="display:flex;align-items:center;gap:12px">
     <div class="avr" style="width:64px;height:64px;flex:none"><img src="${AVREQ[id].img}" alt=""></div>
     <div style="flex:1;min-width:0"><div class="bold">${esc(players[id].name)}</div>${AVATARS[id]?`<div class="muted" style="font-size:12px">remplace sa photo actuelle</div>`:""}
     <div class="row" style="gap:6px;margin-top:6px"><span style="flex:none"><button class="btn sm" onclick="approvePhoto('${id}')">Valider</button></span><span style="flex:none"><button class="btn sm dng" onclick="rejectPhoto('${id}')">Refuser</button></span></div></div></div>`).join("")}</div>`;
@@ -3031,7 +3081,17 @@ const isSession=T=>T&&T.kind==="session";
 let SS={tid:null,sel:{},q:"",direct:false,newMid:null,size:3,showAll:false};
 const firstName=pid=>pCall(pid);
 const liveSessions=()=>sortedTournaments().filter(t=>isSession(t)&&t.status==="live");
+/* Historique complet des sessions (par saison) */
+function sessionsHistoryHTML(){
+  const C=cfg(), all=sortedTournaments().filter(isSession), cur=all.filter(t=>seasonOf(t,C)===C.season);
+  const block=(title,list)=>list.length?`<h2>${title}</h2>`+list.map(tournamentTile).join(""):"";
+  const pastS=seasonOrder(C).filter(s=>s!==C.season&&all.some(t=>seasonOf(t,C)===s)).reverse();
+  return block("En cours",cur.filter(t=>t.status==="live"))+block("Sessions de la saison",cur.filter(t=>t.status!=="live").reverse())+
+    (!cur.length?`<div class="empty">Aucune session cette saison pour l'instant.</div>`:"")+
+    (pastS.length?`<h2>Saisons précédentes</h2>`+pastS.map(S=>{const l=all.filter(t=>seasonOf(t,C)===S).reverse();return `<details class="card"><summary class="bold" style="cursor:pointer">Saison ${esc(sLab(S))} · ${l.length} session(s)</summary><div style="margin-top:10px">${l.map(tournamentTile).join("")}</div></details>`}).join(""):"");
+}
 function vSession(){
+  if(!scorerOn()){app.innerHTML=`<h2 style="margin-bottom:4px">🏀 Sessions</h2><div class="muted" style="margin-bottom:6px">Matchs libres hors tournoi : chaque match compte pour le classement (sans bonus).</div>`+sessionsHistoryHTML();return}
   const C=cfg(), live=liveSessions();
   if(!SS.tid||!live.some(t=>t.id===SS.tid)) SS.tid=live.length?live[live.length-1].id:null;
   if(!SS.tid){
@@ -3040,7 +3100,7 @@ function vSession(){
     app.innerHTML=`<h2>Session de jeu</h2><div class="muted" style="margin-bottom:12px">Des matchs libres, sans tableau ni poules : chaque match compte pour le classement, comme en tournoi (sans bonus).</div>
     <div class="card"><label style="margin-top:0">Nom de la session</label><input id="ssN" value="Session du ${esc(lab)}">
     <button class="btn" style="width:100%;margin-top:12px;padding:13px;font-size:16px" onclick="startSession()">🏀 Démarrer la session</button></div>
-    ${past.length?`<h3 style="margin-top:14px">Sessions précédentes</h3>${past.map(tournamentTile).join("")}`:""}`;
+    ${sessionsHistoryHTML()}`;
     return;
   }
   const T=tournaments[SS.tid], ms=(T.matches||[]), played=ms.filter(scored).reverse(), todo=ms.filter(m=>!scored(m));
