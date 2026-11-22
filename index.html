@@ -318,6 +318,10 @@ body.sp-dragging .sp-door{border-color:#e74c3c;background:rgba(231,76,60,.08);tr
 .ms-r{flex:none;width:22px;height:22px;border-radius:6px;display:grid;place-items:center;font:700 12px Inter;color:#fff}
 .ms-r.w{background:#2ecc71}.ms-r.l{background:#e74c3c}.ms-r.n{background:#7f8c8d}
 .ms-now{margin-top:10px;font-size:13px}
+.wl-top{font-size:42px;text-align:center}
+.wl-box{background:rgba(255,138,0,.08);border:1px solid rgba(255,138,0,.35);border-radius:12px;padding:10px 12px;margin-top:8px}
+.wl-box.guest{background:rgba(255,255,255,.03);border-color:var(--line)}
+.wl-box ul{margin:6px 0 0;padding-left:4px;list-style:none;font-size:13px;line-height:1.7}
 .sj-go{flex:1 1 100%;padding:12px;font-size:15px}
 .sj-ic{font-size:26px;animation:sjb 1.4s ease-in-out infinite}
 @keyframes sjb{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
@@ -2584,6 +2588,15 @@ ${[0,1,2,3].map(r=>[0,1,2,3].map(c=>`<rect x="${52+c*26}" y="${88+r*18}" width="
 <path d="M 64 92 L 74 60 L 90 80 L 100 52 L 110 80 L 126 60 L 136 92 Z" fill="${G}" ${sw}/><rect x="62" y="90" width="76" height="14" rx="3" fill="${GD}" ${sw}/>
 <text x="100" y="150" text-anchor="middle" font-family="Arial Black, Impact, sans-serif" font-weight="900" font-size="38" fill="${O}" stroke="${K}" stroke-width="3.5" paint-order="stroke">×3</text>
 <circle cx="100" cy="66" r="5" fill="#ef4444" stroke="${K}" stroke-width="2"/>`],
+    /* ===== Playground : participation à une session ===== */
+    x15:["Exploits","Playground",u=>`<rect width="200" height="200" fill="#38bdf8"/><rect y="0" width="200" height="90" fill="#7dd3fc"/><circle cx="160" cy="36" r="20" fill="#fde047" stroke="${K}" stroke-width="3"/>`+`<g stroke="#94a3b8" stroke-width="2.5" opacity=".9">${Array.from({length:12},(_,i)=>`<path d="M ${i*20-60} 60 L ${i*20+40} 140 M ${i*20+40} 60 L ${i*20-60} 140"/>`).join("")}</g><rect y="56" width="200" height="6" fill="#64748b"/><rect x="8" y="56" width="6" height="90" fill="#64748b"/><rect x="186" y="56" width="6" height="90" fill="#64748b"/>`,
+`<path d="M 0 138 L 200 138 L 200 200 L 0 200 Z" fill="#475569" stroke="${K}" stroke-width="3"/><path d="M 0 150 L 200 150" stroke="#fff" stroke-width="3" stroke-dasharray="14 9" opacity=".8"/><path d="M 30 200 Q 100 150 170 200" fill="none" stroke="#fff" stroke-width="4" opacity=".85"/>
+<rect x="44" y="40" width="9" height="104" rx="2" fill="#1e3a5f" ${sw}/><path d="M 52 52 L 74 52 L 74 60 L 52 60" fill="#1e3a5f" ${sw}/>
+<rect x="70" y="24" width="58" height="42" rx="3" fill="${W}" ${sw}/><rect x="88" y="38" width="22" height="16" fill="none" stroke="${O}" stroke-width="4"/>
+<ellipse cx="99" cy="68" rx="17" ry="4.5" fill="none" stroke="${O}" stroke-width="4.5"/>
+<path d="M 83 69 L 88 92 L 93 70 L 99 94 L 105 70 L 110 92 L 115 69" fill="none" stroke="#cbd5e1" stroke-width="3" stroke-linejoin="round"/><path d="M 87 88 L 111 88" stroke="#cbd5e1" stroke-width="2.5"/>
+<circle cx="146" cy="118" r="20" fill="${O}" ${sw}/><path d="M 126 118 H 166 M 146 98 V 138 M 132 104 Q 146 118 132 132 M 160 104 Q 146 118 160 132" fill="none" stroke="${K}" stroke-width="3"/>
+<path d="M 128 142 Q 146 148 164 142" fill="none" stroke="#1e293b" stroke-width="5" stroke-linecap="round" opacity=".35"/>`],
     /* ===== Récompenses de saison (les plus prestigieuses) ===== */
     x13:["Exploits","Podium de saison",u=>`<rect width="200" height="200" fill="#2e1065"/>`+Array.from({length:16},(_,i)=>{const t=i*Math.PI/8,w=Math.PI/16,p=(r,x)=>`${(100+r*Math.cos(x)).toFixed(1)},${(96+r*Math.sin(x)).toFixed(1)}`;return `<polygon points="100,96 ${p(160,t)} ${p(160,t+w)}" fill="${i%2?"#7c3aed":"#a855f7"}"/>`}).join(""),
 `<path d="M 100 14 l 6 13 l 14 2 l -10 10 l 3 14 l -13 -7 l -13 7 l 3 -14 l -10 -10 l 14 -2 Z" fill="${G}" stroke="${K}" stroke-width="3" stroke-linejoin="round"/>
@@ -2649,6 +2662,7 @@ const ACH=[
   {k:"upset",ico:"x7",n:"Exploit",d:"Battre une équipe largement favorite (moins de 30 % de chances)",t:s=>(s.log||[]).some(l=>l.won&&l.E<.3)},
   {k:"crush",ico:"x8",n:"Rouleau compresseur",d:"Gagner un match avec 10 points d'écart ou plus",t:s=>(s.log||[]).some(l=>l.won&&l.me-l.op>=10)},
   {k:"wall",ico:"x9",n:"Le Mur",d:"Gagner un match en encaissant 5 points ou moins",t:s=>(s.log||[]).some(l=>l.won&&l.op<=5)},
+  {k:"pg",ico:"x15",n:"Playground",d:"Participer à une session",t:s=>(s.sessAll||0)>=1},
   {k:"loyal",ico:"x10",n:"Fidèle",d:"Participer à 10 tournois ou sessions",t:s=>(s.tournAll||0)+(s.sessAll||0)>=10},
   {k:"cent",ico:"x11",n:"Centurion",d:"Jouer 100 matchs",t:s=>s.gamesAll>=100},
   {k:"dyn",ico:"x12",n:"Dynastie",d:"Gagner 3 tournois",t:s=>s.podAll[0]>=3},
@@ -3076,7 +3090,7 @@ function avatarHTML(id,size,cls=""){let A=AVATARS[id]||{}; if(!A.img&&!A.obj&&cf
 /* Avatar automatique (joueurs sans image) : dernière icône débloquée la plus prestigieuse + meilleur contour */
 /* Couleur de la pastille de niveau : de plus en plus « premium » */
 const lvbTier=l=>l>=30?"lb6":l>=25?"lb5":l>=20?"lb4":l>=15?"lb3":l>=10?"lb2":l>=5?"lb1":"lb0";
-const ACH_RANK=["schamp","spod","dyn","s10","cent","champ","upset","s5","final","loyal","third","wall","crush","ko"];
+const ACH_RANK=["schamp","spod","dyn","s10","cent","champ","upset","s5","final","loyal","third","wall","crush","ko","pg"];
 const FRAME_RANK=["f13","f11","f12","f5","f9","f8","f10","f7","f6","f4","f3","f2","f1"];
 function autoAvatar(id){return MEMO["v"+id]||(MEMO["v"+id]=autoAvatar0(id))}
 function autoAvatar0(id){
@@ -3184,6 +3198,21 @@ function sessionsHistoryHTML(){
     (!cur.length?`<div class="empty">Aucune session cette saison pour l'instant.</div>`:"")+
     (pastS.length?`<h2>Saisons précédentes</h2>`+pastS.map(S=>{const l=all.filter(t=>seasonOf(t,C)===S).reverse();return `<details class="card"><summary class="bold" style="cursor:pointer">Saison ${esc(sLab(S))} · ${l.length} session(s)</summary><div style="margin-top:10px">${l.map(tournamentTile).join("")}</div></details>`}).join(""):"");
 }
+/* ---------- Première visite sur le site : se connecter ou rester invité ---------- */
+function welcomeMaybe(){
+  if(!isSite()||FBUSER||lsGet("welcome-seen")) return;
+  if(document.getElementById("modal")?.classList.contains("on")) return;
+  lsSet("welcome-seen",1);
+  modal(`<div class="wl-top">🏀</div><h3 style="text-align:center;margin-top:4px">Bienvenue sur la Vergèze Ligue 3x3</h3>
+  <div class="muted" style="text-align:center;margin-bottom:12px">Le classement, les tournois et les sessions du Vergèze Basket Club.</div>
+  <div class="wl-box"><b>Avec un compte</b><ul>
+    <li>🎴 Ta fiche joueur : niveau, exploits, icône de profil</li>
+    <li>🏀 Rentrer dans les sessions en cours</li>
+    <li>📝 Inscrire ton équipe aux tournois</li></ul></div>
+  <div class="wl-box guest"><b>En invité</b><ul><li>👀 Suivre les résultats et les classements</li></ul></div>
+  <button class="btn" style="width:100%;margin-top:12px;padding:13px" onclick="closeModal();mRole()">Se connecter / Créer un compte</button>
+  <button class="btn sec" style="width:100%;margin-top:8px" onclick="closeModal();toast('Tu pourras te connecter quand tu veux avec 👤 en haut à droite',4500)">Continuer en invité</button>`);
+}
 /* =====================================================================
    SESSION : joueurs présents (auto-inscription, liste, sortie par glisser)
    ===================================================================== */
@@ -3202,8 +3231,12 @@ async function sessSetPresent(tid,ids){
 const sessMe=()=>isSite()?(typeof myPid==="function"?myPid():""):meId();
 function sessJoinBannerHTML(){
   const T=liveTournament(); if(!T||!isSession(T)) return "";
-  const id=sessMe(); if(!id||!players[id]||sessPresent(T).has(id)) return "";
-  const n=sessPresent(T).size;
+  const id=sessMe(), n=sessPresent(T).size;
+  if(isSite()&&(!FBUSER||!id)){
+    return `<div class="card sj-ban"><div class="sj-ic">🏀</div><div style="flex:1;min-width:0"><b>Session en cours</b><div class="muted" style="font-size:12px">${esc(T.name)} · ${n} joueur${n>1?"s":""} présent${n>1?"s":""}</div></div>
+    <button class="btn sj-go" onclick="mRole()">${FBUSER?"🎴 Relie ton compte à ta fiche pour rentrer":"👤 Connecte-toi pour rentrer dans la session"}</button></div>`;
+  }
+  if(!id||!players[id]||sessPresent(T).has(id)) return "";
   return `<div class="card sj-ban"><div class="sj-ic">🏀</div><div style="flex:1;min-width:0"><b>Session en cours</b><div class="muted" style="font-size:12px">${esc(T.name)} · ${n} joueur${n>1?"s":""} présent${n>1?"s":""}</div></div>
     <button class="btn sj-go" onclick="joinSession('${T.id}')">🏀 Rentrer dans la session</button></div>`;
 }
@@ -3872,6 +3905,7 @@ if(!SNAP)(async()=>{
   DB.doc("config/roles").onSnapshot(s=>{ROLES=s.exists?clone(s.data()):{};computeRole();scheduleRender()},()=>{});
   AUTH.onAuthStateChanged(u=>{
     FBUSER=u; MYID=u?.uid||null; regKey="~"; computeRole(); render();
+    if(!u) setTimeout(welcomeMaybe,700);
     if(u) write("members/"+u.uid,()=>DB.doc("members/"+u.uid).set({name:u.displayName||"",email:u.email||"",seen:Date.now()},{merge:true}));
   });
 })();
