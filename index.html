@@ -318,10 +318,21 @@ body.sp-dragging .sp-door{border-color:#e74c3c;background:rgba(231,76,60,.08);tr
 .ms-r{flex:none;width:22px;height:22px;border-radius:6px;display:grid;place-items:center;font:700 12px Inter;color:#fff}
 .ms-r.w{background:#2ecc71}.ms-r.l{background:#e74c3c}.ms-r.n{background:#7f8c8d}
 .ms-now{margin-top:10px;font-size:13px}
+.wl-top{font-size:42px;text-align:center}
 .wl-logos{display:flex;justify-content:center;align-items:center;gap:22px;margin:2px 0 4px}.wl-logos img{height:72px;width:auto;object-fit:contain;filter:drop-shadow(0 4px 10px rgba(0,0,0,.5))}
 .wl-box{background:rgba(255,138,0,.08);border:1px solid rgba(255,138,0,.35);border-radius:12px;padding:10px 12px;margin-top:8px}
 .wl-box.guest{background:rgba(255,255,255,.03);border-color:var(--line)}
 .wl-box ul{margin:6px 0 0;padding-left:4px;list-style:none;font-size:13px;line-height:1.7}
+.ss-rules{display:flex;align-items:center;flex-wrap:wrap;gap:6px;font-size:13px;margin-top:12px}
+.mcard .mhead .sc .sa{color:#ff8a00}.mcard .mhead .sc .sb{color:#38bdf8}
+.mcard .mhead .ta{color:#ffb15c}.mcard .mhead .tb{color:#7dd3fc}
+.pv-t{font:600 11px Inter;text-transform:uppercase;letter-spacing:.5px;color:var(--mut,#9a8f85);margin-top:8px}
+.pv{display:flex;height:22px;border-radius:8px;overflow:hidden;margin-top:5px;font:700 12px Inter}
+.pv>div{display:flex;align-items:center;min-width:34px;white-space:nowrap}
+.pv-a{background:linear-gradient(90deg,#ff6a00,#ff9a2e);color:#1a0d00;padding-left:8px}
+.pv-b{flex:1;background:linear-gradient(90deg,#0ea5e9,#38bdf8);color:#04202e;justify-content:flex-end;padding-right:8px}
+.pv-n{display:flex;justify-content:space-between;gap:10px;font-size:11px;margin-top:3px}.pv-n span{max-width:48%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.pv-n .ca{color:#ffb15c}.pv-n .cb{color:#7dd3fc;text-align:right}
+.pls-a{border-left:3px solid #ff8a00;padding-left:8px}.pls-b{border-left:3px solid #38bdf8;padding-left:8px}
 .sj-go{flex:1 1 100%;padding:12px;font-size:15px}
 .sj-ic{font-size:26px;animation:sjb 1.4s ease-in-out infinite}
 @keyframes sjb{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
@@ -608,6 +619,7 @@ nav button.navlive:not(.on){border-color:#ff7a1a;box-shadow:0 0 10px rgba(255,12
 .ss-new{margin-top:8px}.ss-new summary{cursor:pointer;color:var(--acc2);font:500 13px Inter;margin-bottom:6px}
 #subtitle .season{display:block}#subtitle .recap{display:block;margin-top:2px}
 .sim-ban{display:flex;align-items:center;gap:8px;justify-content:space-between;background:rgba(255,138,0,.12);border:1px solid rgba(255,138,0,.5);border-radius:10px;padding:8px 12px;margin-bottom:12px;font-size:13px}.sim-ban button{background:none;border:1px solid rgba(255,138,0,.6);color:var(--acc2);border-radius:999px;padding:3px 10px;font:600 12px Inter;cursor:pointer}
+.g-btn{display:flex;align-items:center;justify-content:center;gap:10px}.g-ic{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#fff;color:#141210;font:800 14px Arial,sans-serif;flex:none}
 </style>
 </head>
 <body>
@@ -987,12 +999,18 @@ function write(path,fn){
 function mergeAll(){
   tournaments={};
   for(const id in tRaw){const T=clone(tRaw[id]);
-    (T.matches||[]).forEach(m=>{const s=scoresMap[id+"-"+m.id];if(s){m.sa=Number.isFinite(s.sa)?s.sa:null;m.sb=Number.isFinite(s.sb)?s.sb:null;if(s.time!=null)m.time=s.time;if(Array.isArray(s.ev))m.ev=s.ev;if(s.court!=null)m.court=s.court}});
+    (T.matches||[]).forEach(m=>{if(m.ev)m.ev=evDec(m.ev)});
+    (T.matches||[]).forEach(m=>{const s=scoresMap[id+"-"+m.id];if(s){m.sa=Number.isFinite(s.sa)?s.sa:null;m.sb=Number.isFinite(s.sb)?s.sb:null;if(s.time!=null)m.time=s.time;if(Array.isArray(s.ev))m.ev=evDec(s.ev);if(s.court!=null)m.court=s.court}});
     if(T.status==="planned"&&(T.matches||[]).some(scored)) T.status="live";
     tournaments[id]=T}
 }
-const saveT=(T,keepEv)=>{const {id,...body}=T;if(!keepEv)(body.matches||[]).forEach(m=>{delete m.ev});tRaw[id]=body;mergeAll();scheduleRender();return write("tournaments/"+id,()=>DB.doc("tournaments/"+id).set(body))};
-const saveScore=(tid,mid,data)=>{const k=tid+"-"+mid;scoresMap[k]=data;mergeAll();scheduleRender();return write("scores/"+k,()=>DB.doc("scores/"+k).set(data))};
+/* Firestore refuse les tableaux imbriqués : la courbe [[t,équipe,pts],…] est stockée à plat [t,équipe,pts,t,…] */
+const evEnc=ev=>Array.isArray(ev)&&ev.length&&Array.isArray(ev[0])?ev.flat():ev;
+const evDec=ev=>Array.isArray(ev)&&ev.length&&!Array.isArray(ev[0])?Array.from({length:Math.floor(ev.length/3)},(_,i)=>ev.slice(i*3,i*3+3)):ev;
+const saveT=(T,keepEv)=>{const {id,...body}=T;if(!keepEv)(body.matches||[]).forEach(m=>{delete m.ev});tRaw[id]=body;mergeAll();scheduleRender();
+  const out={...body,matches:(body.matches||[]).map(m=>m.ev?{...m,ev:evEnc(m.ev)}:m)};
+  return write("tournaments/"+id,()=>DB.doc("tournaments/"+id).set(out))};
+const saveScore=(tid,mid,data)=>{const k=tid+"-"+mid;scoresMap[k]=data;mergeAll();scheduleRender();const out=data.ev?{...data,ev:evEnc(data.ev)}:data;return write("scores/"+k,()=>DB.doc("scores/"+k).set(out))};
 const saveP=(id,p)=>{players[id]=p;scheduleRender();return write("players/"+id,()=>DB.doc("players/"+id).set(p))};
 const delDoc=path=>write(path,()=>DB.doc(path).delete());
 const getT=id=>({...clone(tournaments[id]),id});
@@ -1034,7 +1052,7 @@ async function commitScore(tid,mid,a,b,time,court,ev){
     if(structural&&!await ask(`Ce score change le vainqueur : le tableau est mis à jour automatiquement${cleared.length?` et ${cleared.length} score(s) déjà saisi(s) au tour suivant seront effacés (à ressaisir)`:""}. Continuer ?`)) return false;
   }
   if(T.status==="planned"&&scored(m)){T.status="live";structural=true}
-  const prevEv=scoresMap[tid+"-"+mid]?.ev, evs=ev||(a==null?null:prevEv), data={sa:a,sb:b,time:m.time||"",court:m.court||"",at:Date.now()};
+  const prevEv=evDec(scoresMap[tid+"-"+mid]?.ev), evs=ev||(a==null?null:prevEv), data={sa:a,sb:b,time:m.time||"",court:m.court||"",at:Date.now()};
   if(evs&&evs.length) data.ev=evs;
   const now=Date.now(), jobs=[saveScore(tid,mid,data)];
   cleared.forEach(cid=>{const cm=T.matches.find(x=>x.id===cid);jobs.push(saveScore(tid,cid,{sa:null,sb:null,time:cm.time||"",court:cm.court||"",at:now}))});
@@ -1237,7 +1255,7 @@ function vJoueur(){
   <div class="pj-head">${avatarHTML(id,64,rankNow>=1&&rankNow<=3?"pa-ring"+rankNow:"")}<div style="min-width:0">
   <h2 class="${p.g==="F"&&A?"F":""}" style="${p.nick?"margin-bottom:0":""}">${esc(p.name)}${rankNow>=1&&rankNow<=3?`<span class="pmedal" title="${rankNow}${rankNow===1?"er":"e"} au classement">${["🥇","🥈","🥉"][rankNow-1]}</span>`:""}</h2>
   ${p.nick?`<div class="muted pfull">${esc(pFull(p))}</div>`:""}
-  ${canEditPhoto(id)?`<div class="row" style="gap:12px;margin:0 0 8px"><span style="flex:none"><button class="ss-all" style="margin:0" onclick="mNick('${id}')">✏️ ${p.nick?"Modifier le":"Choisir un"} pseudo</button></span><span style="flex:none"><button class="ss-all" style="margin:0" onclick="mPhoto('${id}')">📷 Photo${AVREQ[id]&&!A?" (en attente)":""}</button></span></div>`:""}
+  ${canEditPhoto(id)?`<div class="row" style="gap:12px;margin:0 0 8px"><span style="flex:none"><button class="ss-all" style="margin:0" onclick="mNick('${id}')">✏️ ${p.nick?"Modifier le":"Choisir un"} pseudo</button></span><span style="flex:none"><button class="ss-all" style="margin:0" onclick="mPhoto('${id}')">🖼️ Image profil${AVREQ[id]&&!A?" (en attente)":""}</button></span></div>`:""}
   </div></div>
   ${levelCardHTML(id)}
   ${achCardHTML(id)}
@@ -1480,13 +1498,15 @@ function matchCard(T,R,A,m){
   const aw=s&&m.sa>m.sb;
   return `<div class="card mcard" id="m-${m.id}">
     <div class="muted" style="font-size:12px">${esc(m.round)}${m.time?" · "+esc(m.time):""}${m.court?" · Terrain "+esc(m.court):""}</div>
-    <div class="mhead"><span class="${aw?"bold":""}">${esc(a.name)}<br><span class="muted" style="font-weight:400">${comp(a.roster)}</span></span>
-      <span class="sc">${s?`${m.sa}<span class="muted"> - </span>${m.sb}`:'<span class="muted" style="font:500 14px Inter">à jouer</span>'}</span>
-      <span class="${s&&m.sb>m.sa?"bold":""}" style="text-align:right">${esc(b.name)}<br><span class="muted" style="font-weight:400">${comp(b.roster)}</span></span></div>
+    <div class="mhead"><span class="ta ${aw?"bold":""}">${esc(a.name)}<br><span class="muted" style="font-weight:400">${comp(a.roster)}</span></span>
+      <span class="sc">${s?`<span class="sa">${m.sa}</span><span class="muted"> - </span><span class="sb">${m.sb}</span>`:'<span class="muted" style="font:500 14px Inter">à jouer</span>'}</span>
+      <span class="tb ${s&&m.sb>m.sa?"bold":""}" style="text-align:right">${esc(b.name)}<br><span class="muted" style="font-weight:400">${comp(b.roster)}</span></span></div>
     ${s&&i?`<details class="mdet" ${route.focus===m.id?"open":""}><summary>Détails${m.ev&&m.ev.length?" · courbe":""}</summary>
-    <div class="proba"><div style="width:${Math.round(i.EA*100)}%"></div></div><div class="muted" style="display:flex;justify-content:space-between;font-size:12px"><span>${Math.round(i.EA*100)}%</span><span>probabilité de victoire</span><span>${Math.round((1-i.EA)*100)}%</span></div>
+    <div class="pv-t">Chances de victoire avant le match</div>
+    <div class="pv"><div class="pv-a" style="width:${Math.round(i.EA*100)}%">${Math.round(i.EA*100)}%</div><div class="pv-b">${Math.round((1-i.EA)*100)}%</div></div>
+    <div class="pv-n"><span class="ca">${esc(a.name)}</span><span class="cb">${esc(b.name)}</span></div>
     ${cfg().margin.on?`<div class="muted" style="font-size:12px;margin-top:4px">${i.gap?`Écart ${i.gap} pts · ${marginTier(i.gap)[2]}`:"Match nul"} → points ×${i.M}</div>`:""}
-    <div class="pls"><div>${side(a,true)}</div><div>${side(b,false)}</div></div>
+    <div class="pls"><div class="pls-a">${side(a,true)}</div><div class="pls-b">${side(b,false)}</div></div>
     ${m.ev&&m.ev.length?`<div class="mc-title">📈 Courbe du match</div>${scoreChart(T,m)}`:""}</details>`:""}
     ${A?`${s?`<details class="medit-d"><summary>✎ Corriger</summary>`:""}<div class="meditor"><div class="teams"><span class="muted" style="font-size:12px">Score</span>
         <input id="sa-${m.id}" inputmode="numeric" value="${s?m.sa:""}" placeholder="–"><span class="muted" style="text-align:center">-</span>
@@ -1515,11 +1535,11 @@ function scoreChart(T,m){
     ${yt.map(v=>`<line x1="${L}" x2="${W-Rr}" y1="${y(v)}" y2="${y(v)}" stroke="#2d2926"/><text x="${L-6}" y="${y(v)+4}" text-anchor="end">${v}</text>`).join("")}
     ${ticks.map(t=>`<text x="${x(t)}" y="${H-10}" text-anchor="middle">${mm(t)}</text>`).join("")}
     ${dur<endT?`<line x1="${x(dur)}" x2="${x(dur)}" y1="${Tp}" y2="${H-B}" stroke="#e5281e" stroke-dasharray="4 4"/><text x="${x(dur)+4}" y="${Tp+10}" style="fill:#ff4a3d">prol.</text>`:""}
-    <path d="${path(2)}" fill="none" stroke="#f4f1ec" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="${path(2)}" fill="none" stroke="#38bdf8" stroke-width="2.5" stroke-linejoin="round"/>
     <path d="${path(1)}" fill="none" stroke="#ff8a00" stroke-width="3" stroke-linejoin="round" style="filter:drop-shadow(0 0 4px rgba(255,120,0,.6))"/>
-    <circle cx="${x(endT)}" cy="${y(fa)}" r="4" fill="#ff8a00"/><circle cx="${x(endT)}" cy="${y(fb)}" r="4" fill="#f4f1ec"/>
+    <circle cx="${x(endT)}" cy="${y(fa)}" r="4" fill="#ff8a00"/><circle cx="${x(endT)}" cy="${y(fb)}" r="4" fill="#38bdf8"/>
   </svg>
-  <div class="mc-legend"><span><i style="background:#ff8a00"></i>${na}</span><span><i style="background:#f4f1ec"></i>${nb}</span></div>
+  <div class="mc-legend"><span><i style="background:#ff8a00"></i>${na}</span><span><i style="background:#38bdf8"></i>${nb}</span></div>
   <div class="mc-stats"><div><b>${changes}</b><small>changement${changes>1?"s":""} de leader</small></div>
     <div><b>${bestA[0]?"+"+bestA[0]:"–"}</b><small>plus grosse avance ${na}${bestA[0]?" ("+mm(bestA[1])+")":""}</small></div>
     <div><b>${bestB[0]?"+"+bestB[0]:"–"}</b><small>plus grosse avance ${nb}${bestB[0]?" ("+mm(bestB[1])+")":""}</small></div></div>
@@ -1648,10 +1668,22 @@ function mPlayer(id){
   modal(`<h3>Modifier le joueur</h3><label>Prénom · Nom · Pseudo</label>${npFields("ep",(p.first||p.last)?p:{...splitFull(p.name),nick:""})}<label>Genre</label><select id="epG"><option value="H" ${p.g==="H"?"selected":""}>Homme</option><option value="F" ${p.g==="F"?"selected":""}>Femme</option></select>
   <div class="row" style="margin-top:14px"><button class="btn" onclick="savePlayerEdit('${id}')">Enregistrer</button><button class="btn sec" onclick="closeModal()">Annuler</button></div>
   <label style="margin-top:14px">Fusionner avec une autre fiche (doublon)</label><div class="row"><select id="mgW" style="flex:3"><option value="">Choisir…</option>${Object.keys(players).filter(x=>x!==id).sort((a,b)=>players[a].name.localeCompare(players[b].name)).map(x=>`<option value="${x}">${esc(players[x].name)}</option>`).join("")}</select><button class="btn sm sec" style="flex:none" onclick="const w=document.getElementById('mgW').value;if(w)mMerge('${id}',w)">Fusionner</button></div>
-  ${used?`<div class="muted" style="margin-top:12px">Joueur inscrit dans au moins un tournoi : suppression impossible.</div>`:`<button class="btn dng" style="margin-top:12px;width:100%" onclick="delPlayer('${id}')">Supprimer ce joueur</button>`}`);
+  <button class="btn dng" style="margin-top:14px;width:100%" onclick="delPlayer('${id}')">🗑️ Supprimer ce joueur</button>
+  ${used?`<div class="muted" style="margin-top:6px;font-size:12px">Il a déjà joué : ses matchs restent dans l'historique (affiché « Joueur supprimé ») mais il disparaît du classement et des listes.</div>`:""}`);
 }
 async function savePlayerEdit(id){const r=npRead("ep",id);if(!r)return;const g=document.getElementById("epG")?.value||players[id].g;closeModal();await saveP(id,{...players[id],...r,g});toast("Joueur modifié")}
-function delPlayer(id){closeModal();delete players[id];scheduleRender();delDoc("players/"+id)}
+async function delPlayer(id){
+  const p=players[id]; if(!p) return;
+  if(!await ask(`Supprimer définitivement ${esc(pFull(p)||p.name)} ? Cette action est irréversible.`)) return;
+  const hadAv=!!AVATARS[id]; closeModal(); delete players[id]; delete AVATARS[id]; scheduleRender();
+  delDoc("players/"+id);
+  if(hadAv) delDoc("avatars/"+id);
+  if(AVREQ[id]){delete AVREQ[id];delDoc("avatarReq/"+id)}
+  for(const [tid,T] of Object.entries(tournaments)) if(isSession(T)&&T.status==="live"&&(T.present||[]).includes(id)){const X=getT(tid);X.present=X.present.filter(x=>x!==id);await saveT(X)}
+  Object.keys(SJOIN).filter(k=>SJOIN[k]?.pid===id).forEach(k=>{delete SJOIN[k];delDoc("sessionJoin/"+k)});
+  if(MYP===id){MYP="";lsSet("my-player","")}
+  toast(`${p.name} supprimé(e)`);
+}
 
 /* ---------- Admin : tournoi (création / édition) ---------- */
 function mTournament(id){
@@ -2014,7 +2046,7 @@ async function tmCommit(){
   const before=new Set((tournaments[tid].matches||[]).map(m=>m.id));
   const msg=await autoAdvance(tid);
   TMUNDO={...undo,before,until:Date.now()+120000};
-  toast(msg?"Résultat enregistré · "+msg:"Résultat enregistré dans le tournoi",msg?5000:2600); render();
+  toast(msg?"Résultat enregistré · "+msg:(isSession(tournaments[tid]||{})?"Résultat enregistré dans la session":"Résultat enregistré dans le tournoi"),msg?5000:2600); render();
 }
 /* Enchaîne automatiquement la suite du tournoi quand un tour est terminé. */
 async function autoAdvance(tid){
@@ -2047,7 +2079,7 @@ function computeRole(){
   CAN.owner=ROLE==="admin"&&em===String(window.OWNER_EMAIL||"").toLowerCase();
   regMaybeSub();
 }
-const effRole=()=>RANK[viewRole]<=RANK[ROLE]?viewRole:ROLE;
+const effRole=()=>isSite()&&ROLE!=="admin"?ROLE:(RANK[viewRole]<=RANK[ROLE]?viewRole:ROLE);
 const adminOn=()=>effRole()==="admin";
 const scorerOn=()=>effRole()!=="joueur";
 function setViewRole(r){viewRole=r;try{localStorage.setItem("view-role",r)}catch(e){}if(!scorerOn()&&route.v==="table")route={v:"classement",g:"H"};render()}
@@ -2068,11 +2100,11 @@ function mRole(){
     <div class="row" style="margin-top:10px"><button class="btn" onclick="loginEmail(false)">Se connecter</button><button class="btn sec" onclick="loginEmail(true)">Créer un compte</button></div>
     <button class="ss-all" style="margin-top:10px" onclick="resetPwd()">Mot de passe oublié ?</button>
     <div class="muted" style="text-align:center;margin:14px 0 6px">ou</div>
-    <button class="btn sec" style="width:100%" onclick="loginGoogle()">Continuer avec Google <span class="muted" style="font-size:11px">(ordinateur)</span></button>`);
+    <button class="btn sec g-btn" style="width:100%" onclick="loginGoogle()"><span class="g-ic">G</span>Continuer avec Google</button>`);
   modal(`<h3>Mon compte</h3><div class="muted" style="margin-bottom:10px">${esc(FBUSER.displayName||FBUSER.email||"")} · profil <b style="color:var(--acc2)">${ROLE_LABEL[ROLE]}</b></div>
   ${!FBUSER.emailVerified?`<div class="note">📧 Ton e-mail n'est pas encore confirmé. Ouvre le lien reçu par e-mail (regarde les spams), puis touche « J'ai confirmé ».</div><div class="row" style="margin-bottom:10px"><button class="btn" onclick="checkVerif()">J'ai confirmé</button><button class="btn sec" onclick="resendVerif()">Renvoyer l'e-mail</button></div>`:""}
   ${isVerified()?ficheHTML():""}
-  ${ROLE!=="joueur"?`<div class="muted" style="margin-bottom:6px">Voir le site en tant que :</div>${["joueur","marqueur","admin"].filter(r=>RANK[r]<=RANK[ROLE]).map(r=>`<button class="btn ${effRole()===r?"":"sec"}" style="width:100%;margin-bottom:8px" onclick="closeModal();setViewRole('${r}')">${ROLE_LABEL[r]}</button>`).join("")}`:""}
+  ${ROLE==="admin"?`<div class="muted" style="margin-bottom:6px">Voir le site en tant que :</div>${["joueur","marqueur","admin"].filter(r=>RANK[r]<=RANK[ROLE]).map(r=>`<button class="btn ${effRole()===r?"":"sec"}" style="width:100%;margin-bottom:8px" onclick="closeModal();setViewRole('${r}')">${ROLE_LABEL[r]}</button>`).join("")}`:""}
   <button class="btn dng" style="width:100%;margin-top:6px" onclick="closeModal();AUTH.signOut()">Se déconnecter</button>`);
 }
 function authErr(e){const c=e?.code||"";toast(c.includes("wrong-password")||c.includes("invalid-credential")?"E-mail ou mot de passe incorrect":c.includes("email-already")?"Ce compte existe déjà : connecte-toi":c.includes("weak-password")?"Mot de passe trop court (6 caractères min.)":c.includes("popup")?"Fenêtre de connexion fermée ou bloquée":c.includes("unauthorized-domain")?"Domaine non autorisé dans Firebase (Authentication → Settings)":"Connexion impossible ("+c+")",4500)}
@@ -2081,7 +2113,7 @@ async function loginEmail(create){const e=document.getElementById("lgE").value.t
   try{if(create){const c=await AUTH.createUserWithEmailAndPassword(e,p);try{await c.user.sendEmailVerification()}catch(x){}closeModal();toast("Compte créé : ouvre le lien reçu par e-mail pour le confirmer",6000);setTimeout(mRole,400)}
   else{await AUTH.signInWithEmailAndPassword(e,p);closeModal()}}catch(err){authErr(err)}}
 async function resendVerif(){try{await AUTH.currentUser.sendEmailVerification();toast("E-mail de confirmation renvoyé (regarde aussi les spams)",5000)}catch(e){authErr(e)}}
-async function checkVerif(){try{await AUTH.currentUser.reload();await AUTH.currentUser.getIdToken(true);FBUSER=AUTH.currentUser;computeRole();closeModal();render();toast(FBUSER.emailVerified?"E-mail confirmé ✅":"Pas encore confirmé : ouvre le lien reçu par e-mail",4000)}catch(e){authErr(e)}}
+async function checkVerif(){try{await AUTH.currentUser.reload();await AUTH.currentUser.getIdToken(true);FBUSER=AUTH.currentUser;computeRole();closeModal();render();toast(FBUSER.emailVerified?"E-mail confirmé ✅":"Pas encore confirmé : ouvre le lien reçu par e-mail",4000);if(FBUSER.emailVerified)setTimeout(ficheNudge,600)}catch(e){authErr(e)}}
 async function resetPwd(){const e=document.getElementById("lgE").value.trim();if(!e)return toast("Écris ton e-mail d'abord");try{await AUTH.sendPasswordResetEmail(e);toast("E-mail de réinitialisation envoyé")}catch(err){authErr(err)}}
 function vAcces(){
   const ids=Object.keys(members).sort((a,b)=>(members[b].seen||0)-(members[a].seen||0));
@@ -2097,8 +2129,17 @@ function vAcces(){
    <li>Choisis son profil : <b>Marqueur</b> ou <b>Admin</b>.</li></ol></div>
   <div class="card adminbox"><h3>Comptes connectés (${ids.length})</h3>
   ${ids.length?`<table><tbody>${ids.map(id=>{const m=members[id],own=String(m.email||"").toLowerCase()===String(window.OWNER_EMAIL||"").toLowerCase();return `<tr><td><span class="bold">${esc(m.name||m.email||"Utilisateur")}</span><div class="muted" style="font-size:12px">${esc(m.email||"")} · vu le ${new Date(m.seen||0).toLocaleString("fr-FR",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})}</div></td>
-    <td class="n">${own?`<span class="tag ok">Propriétaire</span>`:`<select style="width:auto" onchange="setRole('${esc(id)}',this.value)"><option value="" ${!ROLES[id]?"selected":""}>Joueur</option><option value="marqueur" ${ROLES[id]==="marqueur"?"selected":""}>Marqueur</option><option value="admin" ${ROLES[id]==="admin"?"selected":""}>Admin</option></select>`}</td></tr>`}).join("")}</tbody></table>`
+    <td class="n">${own?`<span class="tag ok">Propriétaire</span>`:`<select style="width:auto" onchange="setRole('${esc(id)}',this.value)"><option value="" ${!ROLES[id]?"selected":""}>Joueur</option><option value="marqueur" ${ROLES[id]==="marqueur"?"selected":""}>Marqueur</option><option value="admin" ${ROLES[id]==="admin"?"selected":""}>Admin</option></select> <button class="btn sm dng" style="width:auto;margin-left:4px" title="Supprimer ce compte" onclick="delAccount('${esc(id)}')">🗑️</button>`}</td></tr>`}).join("")}</tbody></table>`
   :`<div class="muted">Personne pour l'instant.</div>`}</div>`;
+}
+async function delAccount(id){
+  const m=members[id]||{}, lab=m.name||m.email||"ce compte";
+  const linked=Object.keys(players).filter(p=>players[p].uid===id);
+  if(!await ask(`Supprimer le compte ${esc(lab)} ?${linked.length?` Sa fiche joueur (${esc(players[linked[0]].name)}) est gardée mais n'est plus liée.`:""} Si la personne se reconnecte, elle réapparaîtra comme simple joueur.`)) return;
+  if(ROLES[id]){const R={...ROLES};delete R[id];ROLES=R;computeRole();await write("config/roles",()=>DB.doc("config/roles").set(R))}
+  for(const p of linked){const P={...players[p]};delete P.uid;await saveP(p,P)}
+  Object.keys(SJOIN).filter(k=>SJOIN[k]?.uid===id).forEach(k=>{delete SJOIN[k];delDoc("sessionJoin/"+k)});
+  delete members[id]; scheduleRender(); await delDoc("members/"+id); toast("Compte supprimé");
 }
 async function setRole(id,r){const R={...ROLES};if(r)R[id]=r;else delete R[id];ROLES=R;computeRole();scheduleRender();if(await write("config/roles",()=>DB.doc("config/roles").set(R)))toast("Profil mis à jour")}
 
@@ -2275,7 +2316,7 @@ function tabEquipes(T,R,A,c){
 /* ---------- Fiche joueur liée au compte ---------- */
 function ficheHTML(){
   const mp=myPid(), cl=myMember().claim;
-  if(mp) return `<div class="reg-me" style="margin-bottom:10px;flex-wrap:wrap">🏀 Ta fiche : <b>${esc(cleanN(mp))}</b>${players[mp].nick?`<span class="muted" style="font-weight:400;font-size:12px">${esc(pFull(players[mp]))}</span>`:""}<span style="margin-left:auto;display:flex;gap:6px"><button class="btn sm sec" style="width:auto" onclick="mNick('${mp}')">✏️ Pseudo</button><button class="btn sm sec" style="width:auto" onclick="mPhoto('${mp}')">📷 Photo</button><button class="btn sm sec" style="width:auto" onclick="closeModal();go({v:'joueur',id:'${mp}'})">Mes stats</button></span></div>`;
+  if(mp) return `<div class="reg-me" style="margin-bottom:10px;flex-wrap:wrap">🏀 Ta fiche : <b>${esc(cleanN(mp))}</b>${players[mp].nick?`<span class="muted" style="font-weight:400;font-size:12px">${esc(pFull(players[mp]))}</span>`:""}<span style="margin-left:auto;display:flex;gap:6px"><button class="btn sm sec" style="width:auto" onclick="mNick('${mp}')">✏️ Pseudo</button><button class="btn sm sec" style="width:auto" onclick="mPhoto('${mp}')">🖼️ Image profil</button><button class="btn sm sec" style="width:auto" onclick="closeModal();go({v:'joueur',id:'${mp}'})">Mes stats</button></span></div>`;
   if(cl) return `<div class="note" style="margin-bottom:10px">⏳ Demande envoyée : <b>${esc(cl.name)}</b>${cl.pid?"":" (nouvelle fiche)"}. L'organisateur doit la valider. <button class="ss-all" onclick="cancelClaim()">Annuler</button></div>`;
   return `<div class="note" style="margin-bottom:10px">Ton compte n'est pas encore lié à ta fiche joueur (classement, stats).<button class="btn sm" style="width:100%;margin-top:8px" onclick="mClaim()">Lier ma fiche joueur</button><div class="muted" style="font-size:12px;margin-top:6px">C'est aussi fait automatiquement quand ton équipe est acceptée à un tournoi.</div></div>`;
 }
@@ -2925,14 +2966,14 @@ function liveCourtsHTML(T){
   return `<div class="card lc"><div class="mt-h"><span><span class="livedot"></span>En direct</span></div>${list.map(({o,m})=>{const a=teamOf(T,m.a),b=teamOf(T,m.b);
     return `<div class="lc-r"><span class="lc-c">T${esc(o.court||m.court||"?")}</span><span class="t ${o.a>o.b?"bold":""}">${esc(a?.name||"?")}</span><span class="lc-s">${o.a} – ${o.b}</span><span class="t r ${o.b>o.a?"bold":""}">${esc(b?.name||"?")}</span>${o.run?'<span class="lc-run">⏱</span>':""}</div>`}).join("")}</div>`;
 }
-let ocTimer=null, ocLast={};
+let ocTimer=null, ocLast={}, ocPend=null;
 function pushOnCourt(final){
   const T=tournaments[TM.tid], m=T&&T.matches.find(x=>x.id===TM.mid); if(!T||!m) return;
   const key=TM.tid+"-"+TM.mid, s=TM.score[TM.mid]||{a:0,b:0}, t=TM.timer[TM.mid];
   const d={tid:TM.tid,mid:TM.mid,court:String(m.court||TM.court||""),a:s.a,b:s.b,run:!!(t&&t.run),at:Date.now()};
-  clearTimeout(ocTimer); ocTimer=setTimeout(()=>{ONCOURT[key]=d;write("onCourt/"+key,()=>DB.doc("onCourt/"+key).set(d))},700);
+  clearTimeout(ocTimer); ocPend=key; ocTimer=setTimeout(()=>{ocPend=null;ONCOURT[key]=d;write("onCourt/"+key,()=>DB.doc("onCourt/"+key).set(d))},700);
 }
-function clearOnCourt(tid,mid){const k=tid+"-"+mid;if(ONCOURT[k]){delete ONCOURT[k];delDoc("onCourt/"+k)}}
+function clearOnCourt(tid,mid){const k=tid+"-"+mid,pend=ocPend===k;if(pend){clearTimeout(ocTimer);ocPend=null}if(!(k in ONCOURT)&&!pend)return;delete ONCOURT[k];scheduleRender();delDoc("onCourt/"+k)}
 
 /* ---------- Panneau admin « Direct » ---------- */
 function liveAdminHTML(T){
@@ -3132,14 +3173,14 @@ function shrinkImage(file){return new Promise((ok,ko)=>{const r=new FileReader()
 const canEditPhoto=id=>adminOn()||(typeof myPid==="function"&&myPid()===id);
 function mPhoto(id){
   const p=players[id]; if(!p||!canEditPhoto(id)) return; const A=adminOn(), req=AVREQ[id], cur=AVATARS[id];
-  modal(`<h3>Photo de profil</h3>
+  modal(`<h3>Image de profil</h3>
   <div class="row" style="justify-content:center;gap:18px;margin:6px 0 12px">${avatarHTML(id,84,"pa-ring1")}${req&&!A?`<div style="text-align:center"><div class="avr" style="width:84px;height:84px;opacity:.75"><img src="${req.img}" alt=""></div><div class="muted" style="font-size:12px;margin-top:4px">⏳ en attente</div></div>`:""}</div>
-  <div class="muted" style="margin-bottom:10px">${A?"En admin, la photo est publiée directement.":"Ta photo sera visible après validation par l'organisateur. Pas de photo choquante, de logo de marque ni de photo de quelqu'un d'autre."}</div>
+  <div class="muted" style="margin-bottom:10px">${A?"En admin, l'image est publiée directement.":"Ton image sera visible après validation par l'organisateur. Pas de photo choquante, de logo de marque ni de photo de quelqu'un d'autre."}</div>
   <input type="file" id="phF" accept="image/*" style="display:none" onchange="pickPhoto('${id}',this)">
   <button class="btn" style="width:100%" onclick="mCreator('${id}')">🏀 Icône & contour</button>
-  <button class="btn sec" style="width:100%;margin-top:8px" onclick="document.getElementById('phF').click()">📷 Envoyer ma photo${A?"":" (validation requise)"}</button>
+  <button class="btn sec" style="width:100%;margin-top:8px" onclick="document.getElementById('phF').click()">📷 Envoyer une image${A?"":" (validation requise)"}</button>
 
-  ${cur?`<button class="btn sm dng" style="width:100%;margin-top:10px" onclick="removePhoto('${id}')">Retirer ${cur.img?"la photo actuelle":"l'icône actuelle"}</button>`:""}
+  ${cur?`<button class="btn sm dng" style="width:100%;margin-top:10px" onclick="removePhoto('${id}')">Retirer ${cur.img?"l'image actuelle":"l'icône actuelle"}</button>`:""}
   ${req&&!A?`<button class="btn sm sec" style="width:100%;margin-top:8px" onclick="cancelPhotoReq('${id}')">Annuler la demande en attente</button>`:""}
   <button class="btn sec" style="width:100%;margin-top:8px" onclick="closeModal()">Fermer</button>`);
 }
@@ -3147,22 +3188,22 @@ async function pickPhoto(id,inp){
   const f=inp.files&&inp.files[0]; if(!f) return;
   let img; try{img=await shrinkImage(f)}catch(e){return toast("Image illisible")}
   closeModal();
-  if(adminOn()){AVATARS[id]={img,at:Date.now()};scheduleRender();if(await write("avatars/"+id,()=>DB.doc("avatars/"+id).set({img,at:Date.now()})))toast("Photo publiée");return}
+  if(adminOn()){AVATARS[id]={img,at:Date.now()};scheduleRender();if(await write("avatars/"+id,()=>DB.doc("avatars/"+id).set({img,at:Date.now()})))toast("Image de profil publiée");return}
   const d={img,uid:FBUSER?.uid||"",pid:id,name:players[id].name,at:Date.now()};
   AVREQ[id]=d; scheduleRender();
-  if(await write("avatarReq/"+id,()=>DB.doc("avatarReq/"+id).set(d))) toast("Photo envoyée : elle apparaîtra après validation ✅",4000);
+  if(await write("avatarReq/"+id,()=>DB.doc("avatarReq/"+id).set(d))) toast("Image envoyée : elle apparaîtra après validation ✅",4000);
 }
-async function removePhoto(id){if(!await ask("Retirer la photo de profil ?"))return;closeModal();delete AVATARS[id];scheduleRender();await delDoc("avatars/"+id)}
+async function removePhoto(id){if(!await ask("Retirer l'image de profil ?"))return;closeModal();delete AVATARS[id];scheduleRender();await delDoc("avatars/"+id)}
 async function cancelPhotoReq(id){closeModal();delete AVREQ[id];scheduleRender();await delDoc("avatarReq/"+id)}
 async function approvePhoto(id){const r=AVREQ[id];if(!r)return;AVATARS[id]={img:r.img,at:Date.now()};delete AVREQ[id];scheduleRender();
-  await write("avatars/"+id,()=>DB.doc("avatars/"+id).set({img:r.img,at:Date.now()}));await delDoc("avatarReq/"+id);toast("Photo validée")}
-async function rejectPhoto(id){delete AVREQ[id];scheduleRender();await delDoc("avatarReq/"+id);toast("Photo refusée")}
+  await write("avatars/"+id,()=>DB.doc("avatars/"+id).set({img:r.img,at:Date.now()}));await delDoc("avatarReq/"+id);toast("Image de profil validée")}
+async function rejectPhoto(id){delete AVREQ[id];scheduleRender();await delDoc("avatarReq/"+id);toast("Image de profil refusée")}
 /* ---------- « À faire » de l'admin ---------- */
 function todoItems(){
   if(!adminOn()) return [];
   const out=[], T=Object.entries(tournaments).map(([id,x])=>({...x,id})).filter(x=>x.status!=="done");
   const nPh=Object.keys(AVREQ).filter(id=>players[id]).length;
-  if(nPh) out.push({ic:"📷",n:nPh,t:`photo${nPh>1?"s":""} de profil à valider`,go:"go({v:'admin'});setTimeout(()=>document.querySelector('.todo-ph')?.scrollIntoView({behavior:'smooth'}),100)"});
+  if(nPh) out.push({ic:"📷",n:nPh,t:`image${nPh>1?"s":""} de profil à valider`,go:"go({v:'admin'});setTimeout(()=>document.querySelector('.todo-ph')?.scrollIntoView({behavior:'smooth'}),100)"});
   const nCl=Object.keys(members).filter(id=>members[id]?.claim).length;
   if(nCl) out.push({ic:"🔗",n:nCl,t:`demande${nCl>1?"s":""} de fiche joueur`,go:"go({v:'acces'})"});
   T.forEach(x=>{const n=pendingRegs(x.id).length;if(n)out.push({ic:"📝",n,t:`inscription${n>1?"s":""} à valider · ${x.name}`,go:`go({v:'tournoi',id:'${x.id}',tab:'equipes'})`})});
@@ -3173,14 +3214,14 @@ function todoItems(){
 const todoCount=()=>{try{return todoItems().reduce((s,x)=>s+x.n,0)}catch(e){return 0}};
 function todoHTML(){
   const L=todoItems();
-  if(!L.length) return `<div class="card todo ok"><span>✅</span><div><b>Rien à faire</b><div class="muted" style="font-size:12px">Aucune photo, demande, inscription ni paiement en attente.</div></div></div>`;
+  if(!L.length) return `<div class="card todo ok"><span>✅</span><div><b>Rien à faire</b><div class="muted" style="font-size:12px">Aucune image de profil, demande, inscription ni paiement en attente.</div></div></div>`;
   return `<div class="card todo"><h3>🔔 À faire <span class="todo-n">${L.reduce((s,x)=>s+x.n,0)}</span></h3>${L.map(x=>`<button class="todo-it" onclick="${x.go}"><span class="todo-ic">${x.ic}</span><span><b>${x.n}</b> ${esc(x.t)}</span><span class="muted">›</span></button>`).join("")}</div>`;
 }
 function avatarReqHTML(){
   if(!adminOn()) return ""; const ids=Object.keys(AVREQ).filter(id=>players[id]); if(!ids.length) return "";
-  return `<div class="card adminbox todo-ph"><h3>📷 Photos à valider (${ids.length})</h3>${ids.map(id=>`<div class="reg-item" style="display:flex;align-items:center;gap:12px">
+  return `<div class="card adminbox todo-ph"><h3>🖼️ Images de profil à valider (${ids.length})</h3>${ids.map(id=>`<div class="reg-item" style="display:flex;align-items:center;gap:12px">
     <div class="avr" style="width:64px;height:64px;flex:none"><img src="${AVREQ[id].img}" alt=""></div>
-    <div style="flex:1;min-width:0"><div class="bold">${esc(players[id].name)}</div>${AVATARS[id]?`<div class="muted" style="font-size:12px">remplace sa photo actuelle</div>`:""}
+    <div style="flex:1;min-width:0"><div class="bold">${esc(players[id].name)}</div>${AVATARS[id]?`<div class="muted" style="font-size:12px">remplace son image actuelle</div>`:""}
     <div class="row" style="gap:6px;margin-top:6px"><span style="flex:none"><button class="btn sm" onclick="approvePhoto('${id}')">Valider</button></span><span style="flex:none"><button class="btn sm dng" onclick="rejectPhoto('${id}')">Refuser</button></span></div></div></div>`).join("")}</div>`;
 }
 
@@ -3197,6 +3238,20 @@ function sessionsHistoryHTML(){
   return block("En cours",cur.filter(t=>t.status==="live"))+block("Sessions de la saison",cur.filter(t=>t.status!=="live").reverse())+
     (!cur.length?`<div class="empty">Aucune session cette saison pour l'instant.</div>`:"")+
     (pastS.length?`<h2>Saisons précédentes</h2>`+pastS.map(S=>{const l=all.filter(t=>seasonOf(t,C)===S).reverse();return `<details class="card"><summary class="bold" style="cursor:pointer">Saison ${esc(sLab(S))} · ${l.length} session(s)</summary><div style="margin-top:10px">${l.map(tournamentTile).join("")}</div></details>`}).join(""):"");
+}
+/* ---------- Compte connecté mais pas relié à une fiche joueur ---------- */
+function ficheNudge(){
+  if(!isSite()||!FBUSER||!isVerified()||myPid()||myMember().claim) return;
+  try{if(sessionStorage.getItem("fiche-nudge"))return;sessionStorage.setItem("fiche-nudge","1")}catch(e){}
+  if(document.getElementById("modal")?.classList.contains("on")) return;
+  modal(`<div class="wl-top">🎴</div><h3 style="text-align:center;margin-top:4px">Relie ton compte à ta fiche joueur</h3>
+  <div class="muted" style="text-align:center;margin-bottom:12px">Ton compte n'est lié à aucun joueur pour l'instant.</div>
+  <div class="wl-box"><b>Une fois relié, tu pourras</b><ul>
+    <li>📊 Retrouver ton classement, tes stats et ton niveau</li>
+    <li>🎨 Choisir ton icône et ton contour</li>
+    <li>🏀 Rentrer toi-même dans les sessions</li></ul></div>
+  <button class="btn" style="width:100%;margin-top:12px;padding:13px" onclick="closeModal();mClaim()">Trouver mon nom ou créer ma fiche</button>
+  <button class="btn sec" style="width:100%;margin-top:8px" onclick="closeModal();toast('Tu pourras le faire plus tard avec 👤 en haut à droite',4500)">Plus tard</button>`);
 }
 /* ---------- Première visite sur le site : se connecter ou rester invité ---------- */
 function welcomeMaybe(){
@@ -3329,11 +3384,13 @@ function vSession(){
   if(!scorerOn()){app.innerHTML=`<h2 style="margin-bottom:4px">🏀 Sessions</h2><div class="muted" style="margin-bottom:6px">Matchs libres hors tournoi : chaque match compte pour le classement (sans bonus).</div>`+sessionsHistoryHTML();return}
   const C=cfg(), live=liveSessions();
   if(!SS.tid||!live.some(t=>t.id===SS.tid)) SS.tid=live.length?live[live.length-1].id:null;
+  if(!SS.tid&&!adminOn()){app.innerHTML=`<h2 style="margin-bottom:4px">🏀 Sessions</h2><div class="note" style="margin-bottom:10px">Aucune session en cours. Seul l'organisateur peut lancer une session : dès qu'elle démarre, tu pourras créer les matchs et saisir les scores ici.</div>`+sessionsHistoryHTML();return}
   if(!SS.tid){
     const d=new Date(), lab=d.toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"long"});
     const past=sortedTournaments().filter(isSession).reverse().slice(0,5);
     app.innerHTML=`<h2>Session de jeu</h2><div class="muted" style="margin-bottom:12px">Des matchs libres, sans tableau ni poules : chaque match compte pour le classement, comme en tournoi (sans bonus).</div>
     <div class="card"><label style="margin-top:0">Nom de la session</label><input id="ssN" value="Session du ${esc(lab)}">
+    <div class="row" style="margin-top:8px"><div><label>⏱️ Temps de jeu (min)</label><input id="ssMin" type="number" min="1" max="40" value="${cfgDoc.sessMin??10}"></div><div><label>🎯 Points pour gagner</label><input id="ssPts" type="number" min="5" max="50" value="${cfgDoc.sessPts??21}"></div></div>
     <button class="btn" style="width:100%;margin-top:12px;padding:13px;font-size:16px" onclick="startSession()">🏀 Démarrer la session</button></div>
     ${sessionsHistoryHTML()}`;
     return;
@@ -3353,6 +3410,7 @@ function vSession(){
   app.innerHTML=`<div class="row" style="justify-content:space-between;align-items:flex-start"><div style="flex:3"><h2 style="margin-bottom:2px">${esc(T.name)} <span class="tag live">EN COURS</span></h2><div class="muted">${played.length} match${played.length>1?"s":""} joué${played.length>1?"s":""} · ${inSession.size} joueur${inSession.size>1?"s":""}</div></div>
     <button class="btn sm sec" style="flex:none" onclick="endSession()">Terminer</button></div>
   ${todo.length?`<h3 style="margin-top:14px">À jouer</h3>${todo.map(m=>`<div class="card" style="padding:10px 14px">${tline(m)}<div class="row" style="margin-top:8px"><button class="btn sm" onclick="sessionToTable('${m.id}')">⏱ Table de marque</button><button class="btn sm sec" onclick="sessionScore('${m.id}')">✍️ Score final</button><button class="btn sm dng" style="flex:none" onclick="sessionDel('${m.id}')">✕</button></div></div>`).join("")}`:""}
+  <div class="ss-rules">⏱️ <b>${T.matchMinutes??10} min</b> · 🎯 <b>${T.scoreLimit??21} pts</b>${adminOn()?`<button class="ss-all" style="margin:0 0 0 auto" onclick="mSessRules()">✎ Modifier</button>`:""}</div>
   <h3 style="margin-top:14px">Nouveau match</h3>
   <div class="card ss-pres">
     <div class="row sp-head"><div style="flex:1;min-width:0"><b>👥 ${present.size} présent${present.size>1?"s":""}</b>${present.size?`<span class="muted"> · ${avail} dispo</span>`:""}</div>
@@ -3369,10 +3427,26 @@ function vSession(){
   </div>
   ${played.length?`<h3 style="margin-top:14px">Matchs joués</h3><div class="card">${played.map(tline).join("")}</div>`:""}`;
 }
+/* Mémorise le temps / les points pour les prochaines sessions (admin) */
+async function sessDefaults(mn,pt){if(!adminOn()||(cfgDoc.sessMin===mn&&cfgDoc.sessPts===pt))return;cfgDoc={...cfgDoc,sessMin:mn,sessPts:pt};await write("config/main",()=>DB.doc("config/main").set(cfgDoc))}
+function mSessRules(){
+  const T=tournaments[SS.tid]; if(!T||!adminOn()) return;
+  modal(`<h3>Règles des matchs</h3><div class="muted" style="margin-bottom:10px">S'applique aux prochains matchs de la session.</div>
+  <div class="row"><div><label>⏱️ Temps de jeu (min)</label><input id="srMin" type="number" min="1" max="40" value="${T.matchMinutes??10}"></div><div><label>🎯 Points pour gagner</label><input id="srPts" type="number" min="5" max="50" value="${T.scoreLimit??21}"></div></div>
+  <div class="row" style="margin-top:14px"><button class="btn" onclick="saveSessRules()">Enregistrer</button><button class="btn sec" onclick="closeModal()">Annuler</button></div>`);
+}
+async function saveSessRules(){
+  const mn=Math.min(40,Math.max(1,+document.getElementById("srMin").value||10)), pt=Math.min(50,Math.max(5,+document.getElementById("srPts").value||21));
+  closeModal(); const T=getT(SS.tid); T.matchMinutes=mn; T.finalMinutes=mn; T.scoreLimit=pt; await saveT(T);
+  sessDefaults(mn,pt);
+  toast(`Règles : ${mn} min · ${pt} pts`);
+}
 async function startSession(){
+  if(!adminOn()) return toast("Seul l'organisateur peut lancer une session");
   const C=cfg(), name=document.getElementById("ssN").value.trim()||"Session";
-  const T={id:uid(),kind:"session",name,status:"live",season:C.season,date:new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,10),teams:[],matches:[],matchMinutes:10,finalMinutes:10,scoreLimit:21,createdAt:Date.now()};
-  SS={tid:T.id,sel:{},q:"",direct:false,size:3,showAll:false}; await saveT(T); toast("Session démarrée : les joueurs peuvent rentrer dedans depuis leur fiche",3500);
+  const mn=Math.min(40,Math.max(1,+document.getElementById("ssMin")?.value||10)), pt=Math.min(50,Math.max(5,+document.getElementById("ssPts")?.value||21));
+  const T={id:uid(),kind:"session",name,status:"live",season:C.season,date:new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,10),teams:[],matches:[],matchMinutes:mn,finalMinutes:mn,scoreLimit:pt,createdAt:Date.now()};
+  SS={tid:T.id,sel:{},q:"",direct:false,size:3,showAll:false}; await saveT(T); sessDefaults(mn,pt); toast("Session démarrée : les joueurs peuvent rentrer dedans depuis leur fiche",3500);
 }
 async function endSession(){
   const T=tournaments[SS.tid], todo=(T.matches||[]).filter(m=>!scored(m)).length;
@@ -3630,7 +3704,7 @@ function trophiesHTML(g){
 /* ---------- Doublons & fusion de joueurs ---------- */
 /* Identité = prénom + nom (obligatoires) ; affichage = pseudo s'il existe */
 const pFull=p=>p?((p.first||p.last)?`${p.first||""} ${p.last||""}`.trim():String(p.name||"").replace(/\s*\(démo\)/i,"")):"";
-const pCall=id=>{const p=players[id];if(!p)return "?";return p.nick||p.first||String(p.name||"?").replace(/\s*\(démo\)/i,"").split(" ")[0]};
+const pCall=id=>{const p=players[id];if(!p)return "Joueur supprimé";return p.nick||p.first||String(p.name||"?").replace(/\s*\(démo\)/i,"").split(" ")[0]};
 const capF=s=>String(s||"").trim().replace(/\s+/g," ").replace(/^\p{L}/u,c=>c.toUpperCase());
 const splitFull=n=>{const w=String(n||"").replace(/\s*\(démo\)/i,"").trim().split(/\s+/);return {first:capF(w[0]||""),last:capF(w.slice(1).join(" "))}};
 const npFields=(px,v={})=>`<div class="row"><input id="${px}F" placeholder="Prénom *" value="${esc(v.first||"")}" autocomplete="off"><input id="${px}L" placeholder="Nom *" value="${esc(v.last||"")}" autocomplete="off"></div><input id="${px}K" placeholder="Pseudo (optionnel)" value="${esc(v.nick||"")}" style="margin-top:6px" autocomplete="off" maxlength="24">`;
@@ -3906,7 +3980,7 @@ if(!SNAP)(async()=>{
   DB.doc("config/roles").onSnapshot(s=>{ROLES=s.exists?clone(s.data()):{};computeRole();scheduleRender()},()=>{});
   AUTH.onAuthStateChanged(u=>{
     FBUSER=u; MYID=u?.uid||null; regKey="~"; computeRole(); render();
-    if(!u) setTimeout(welcomeMaybe,700);
+    if(!u) setTimeout(welcomeMaybe,700); else setTimeout(ficheNudge,1800);
     if(u) write("members/"+u.uid,()=>DB.doc("members/"+u.uid).set({name:u.displayName||"",email:u.email||"",seen:Date.now()},{merge:true}));
   });
 })();
