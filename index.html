@@ -2323,8 +2323,8 @@ function ficheHTML(){
 function mClaim(){
   const ids=Object.keys(players).filter(id=>!players[id].uid&&!players[id].demo).sort((a,b)=>players[a].name.localeCompare(players[b].name));
   modal(`<h3>Lier ma fiche joueur</h3><div class="muted" style="margin-bottom:8px">Choisis ton nom si tu as déjà joué un tournoi.</div>
-  <input placeholder="Rechercher ton nom…" oninput="const q=normName(this.value);document.querySelectorAll('#clL .ss-chip').forEach(b=>b.style.display=b.dataset.n.includes(q)?'':'none')">
-  <div class="ss-chips" id="clL" style="max-height:40vh;margin-top:8px">${ids.map(id=>`<button class="ss-chip" data-n="${esc(normName(players[id].name+" "+pFull(players[id])))}" onclick="sendClaim('${id}')">${esc(players[id].name)}${players[id].nick?` <span class="muted">(${esc(pFull(players[id]))})</span>`:""}</button>`).join("")||'<div class="muted">Aucune fiche disponible.</div>'}</div>
+  <input placeholder="Rechercher ton nom…" oninput="const q=normName(this.value);document.querySelectorAll('#clList .ss-chip').forEach(b=>b.style.display=b.dataset.n.includes(q)?'':'none')">
+  <div class="ss-chips" id="clList" style="max-height:40vh;margin-top:8px">${ids.map(id=>`<button class="ss-chip" data-n="${esc(normName(players[id].name+" "+pFull(players[id])))}" onclick="sendClaim('${id}')">${esc(players[id].name)}${players[id].nick?` <span class="muted">(${esc(pFull(players[id]))})</span>`:""}</button>`).join("")||'<div class="muted">Aucune fiche disponible.</div>'}</div>
   <label style="margin-top:12px">Jamais joué ? Crée ta fiche</label>
   ${npFields("cl",splitFull(FBUSER.displayName||""))}<div class="row" style="margin-top:6px"><select id="clG"><option value="H">Homme</option><option value="F">Femme</option></select></div>
   <div class="row" style="margin-top:10px"><button class="btn" onclick="sendClaim('')">Demander</button><button class="btn sec" onclick="closeModal()">Annuler</button></div>`);
