@@ -15,7 +15,7 @@ header{padding:18px 16px 8px;max-width:900px;margin:auto}
 h1{font:800 30px/1 'Barlow Condensed',sans-serif;margin:0;letter-spacing:.5px;text-transform:uppercase}
 h1 span{color:var(--acc)}
 .sub{color:var(--mut);font-size:13px;margin-top:4px}
-nav{display:flex;gap:6px;overflow-x:auto;padding:10px 16px;max-width:900px;margin:auto;position:sticky;top:0;background:var(--bg);z-index:5;border-bottom:1px solid var(--line)}
+nav{display:flex;gap:6px;overflow-x:auto;padding:10px 16px;max-width:900px;margin:auto;position:sticky;top:0;background:var(--bg);z-index:20;border-bottom:1px solid var(--line)}
 nav button,.seg button{background:var(--card);color:var(--txt);border:1px solid var(--line);border-radius:999px;padding:7px 14px;font:600 14px Inter;white-space:nowrap;cursor:pointer}
 nav button.on,.seg button.on{background:var(--acc);border-color:var(--acc);color:#111}
 nav button.adm{border-style:dashed}
@@ -267,6 +267,60 @@ nav button.on .livedot{background:#7a0d05}
 .ss-chip.on1{background:var(--fire);color:#1a0d00;border-color:transparent;font-weight:600}
 .ss-chip.on2{background:#f4f1ec;color:#141212;border-color:transparent;font-weight:600}
 .btn[disabled]{opacity:.45;pointer-events:none}
+.sp-list{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.sp-chip{display:flex;align-items:center;gap:6px;background:rgba(88,214,141,.10);border:1px solid rgba(88,214,141,.45);border-radius:999px;padding:3px 10px 3px 3px;font:500 13px Inter;color:#d8ffe6;cursor:pointer;user-select:none;-webkit-user-select:none}
+.sp-chip .avr{flex:none}
+.sp-chip i{font-style:normal;font-size:11px}
+.sp-chip.busy{background:rgba(255,138,0,.10);border-color:rgba(255,138,0,.5);color:var(--acc2)}
+.sp-chip.me{box-shadow:0 0 0 2px var(--fire)}
+.sp-list.adm .sp-chip{touch-action:none;cursor:grab}
+.sp-chip.drag{opacity:.3}
+.sp-ghost{position:fixed;z-index:9999;pointer-events:none;transform:translate(-50%,-60%) scale(1.08);box-shadow:0 8px 24px rgba(0,0,0,.5);transition:background .15s}
+.sp-ghost.out{background:rgba(231,76,60,.35);border-color:#e74c3c;color:#fff}
+.sp-door{flex:none;display:flex;flex-direction:column;align-items:center;justify-content:center;width:58px;height:58px;border:2px dashed #5a4a3a;border-radius:12px;font-size:26px;line-height:1;transition:all .15s}
+.sp-door small{font:600 9px Inter;text-transform:uppercase;letter-spacing:.5px;color:var(--mut,#9a8f85);margin-top:3px}
+body.sp-dragging .sp-door{border-color:#e74c3c;background:rgba(231,76,60,.08);transform:scale(1.08)}
+.sp-door.hot{border-style:solid;background:rgba(231,76,60,.3)!important;transform:scale(1.22)!important}
+.sp-hint{font-size:11px;margin-top:6px}
+.ap-chip{display:inline-flex;align-items:center;gap:6px;padding:3px 10px 3px 3px}
+.sj-ban{display:flex;align-items:center;gap:10px;flex-wrap:wrap;border:1px solid var(--fire);background:linear-gradient(90deg,rgba(255,138,0,.16),rgba(255,138,0,.04))}
+.sp-head{align-items:center;gap:8px}
+.sp-add{flex:none;display:flex;flex-direction:column;align-items:center;justify-content:center;width:58px;height:58px;border:1px solid rgba(255,138,0,.6);background:rgba(255,138,0,.12);border-radius:12px;font-size:20px;line-height:1;color:var(--txt);cursor:pointer}
+.sp-add small{font:600 9px Inter;text-transform:uppercase;letter-spacing:.5px;color:var(--acc2);margin-top:4px}
+.sp-list.adm .sp-chip.on1,.sp-chip.on1{background:var(--fire);border-color:transparent;color:#1a0d00;font-weight:600}
+.sp-list.adm .sp-chip.on2,.sp-chip.on2{background:#f4f1ec;border-color:transparent;color:#141212;font-weight:600}
+.sp-list.adm .sp-chip{background:rgba(25,23,22,.9);border-color:#3a332d;color:var(--txt)}
+.sp-list.adm .sp-chip.busy{opacity:.5}
+.ss-rand{display:grid!important;grid-template-columns:1fr 1fr;gap:6px}.ss-rand .seg{grid-column:1/-1;display:flex}.ss-rand .seg button{flex:1}.ss-rand .btn{width:100%;padding:9px 4px}
+.sp-chip i.w{opacity:.8}
+.ss-teams small{display:block;font:500 12px Inter;text-transform:none;letter-spacing:0;opacity:.85;margin-top:2px;white-space:normal}
+.ss-teams>div{flex-direction:column}
+.sp-tools{gap:6px;margin-top:8px}
+.sp-tools button{flex:1;background:none;border:1px solid #3a332d;border-radius:8px;color:var(--txt);font:500 12px Inter;padding:7px 4px;cursor:pointer}
+.sr-mv{display:block;font:700 10px Inter;text-align:center;margin-top:2px}
+.sr-mv.up{color:#58d68d}.sr-mv.dn{color:#e74c3c}.sr-mv.eq{color:var(--mut,#8a8079)}.sr-mv.new{color:var(--fire)}
+.sr-leg{font-size:12px;line-height:1.6}.sr-leg span{white-space:nowrap}.sr-leg .up{color:#58d68d;font-weight:700}.sr-leg .dn{color:#e74c3c;font-weight:700}.sr-leg .eq{font-weight:700}.sr-leg .new{color:var(--fire);font-weight:700}
+.sr-av{display:flex;flex-direction:column;align-items:center;gap:2px;flex:none;width:46px}.sr-av small{font:600 10px Inter;color:var(--mut,#9a8f85);white-space:nowrap}
+.sr-n{display:flex;align-items:center;gap:10px}
+.mm-wrap .mcard{margin:0;border:none;padding:0;background:none;box-shadow:none}
+.ms-card{border:1px solid rgba(255,138,0,.45)}
+.ms-h{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font:600 15px Oswald,sans-serif;text-transform:uppercase;letter-spacing:.5px;color:var(--acc2);margin-bottom:10px}
+.ms-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;text-align:center}
+.ms-grid>div{background:rgba(255,255,255,.03);border-radius:10px;padding:8px 2px}
+.ms-grid b{display:block;font:700 20px Oswald,sans-serif}.ms-grid sup{font-size:11px}
+.ms-grid small{display:block;font-size:10px;color:var(--mut,#9a8f85);margin-top:2px}
+.ms-who{font:500 12px Inter;text-transform:none;letter-spacing:0;color:var(--mut,#9a8f85)}.ms-who a{color:var(--acc2);cursor:pointer;text-decoration:underline}
+.ms-list{margin-top:8px}
+.ms-last{display:flex;align-items:center;gap:8px;padding:7px 0;font-size:13px;cursor:pointer;border-top:1px solid rgba(255,255,255,.05)}
+.ms-last:first-child{border-top:none}
+.ms-d{min-width:30px;text-align:right}
+.ms-o{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ms-r{flex:none;width:22px;height:22px;border-radius:6px;display:grid;place-items:center;font:700 12px Inter;color:#fff}
+.ms-r.w{background:#2ecc71}.ms-r.l{background:#e74c3c}.ms-r.n{background:#7f8c8d}
+.ms-now{margin-top:10px;font-size:13px}
+.sj-go{flex:1 1 100%;padding:12px;font-size:15px}
+.sj-ic{font-size:26px;animation:sjb 1.4s ease-in-out infinite}
+@keyframes sjb{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
 .ss-chip.pres{background:rgba(88,214,141,.16);border-color:var(--win);color:#d8ffe6;font-weight:600}
 .ss-chip.pres::before{content:"✓ ";color:var(--win)}
 .ss-chip.busy{opacity:.45}
@@ -355,7 +409,7 @@ nav button.on .livedot{background:#7a0d05}
 .av-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
 .av-pick{aspect-ratio:1;border-radius:50%;padding:0;border:2px solid transparent;background:none;cursor:pointer;overflow:hidden}
 .av-pick svg{display:block;width:100%;height:100%}.av-pick.on{border-color:var(--acc)}
-.cc-top{display:flex;align-items:center;justify-content:center;gap:14px;margin:4px -16px 6px;padding:8px 16px;position:sticky;top:-16px;z-index:3;background:#161414;border-bottom:1px solid var(--line);box-shadow:0 8px 14px -10px rgba(0,0,0,.6)}
+.cc-top{display:flex;align-items:center;justify-content:center;gap:14px;margin:4px -16px 6px;padding:8px 16px;position:sticky;top:-16px;z-index:10;background:#161414;border-bottom:1px solid var(--line);box-shadow:0 8px 14px -10px rgba(0,0,0,.6)}
 .cc-prev{width:112px;height:112px;border-radius:50%;overflow:hidden;padding:3px;background:conic-gradient(#fff1b8,#ffcf3f,#b8860b,#ffcf3f,#fff1b8);flex:none}
 .cc-prev svg{width:100%;height:100%;display:block;border-radius:50%}
 .cc-empty{display:flex;align-items:center;justify-content:center;width:100%;height:100%;border-radius:50%;background:#23201d;color:var(--mut);font-size:12px;text-align:center;padding:10px}
@@ -377,7 +431,7 @@ nav button.on .livedot{background:#7a0d05}
 .cc-chips{display:flex;flex-wrap:wrap;gap:6px}
 .cc-chips button{background:var(--card);color:var(--txt);border:1px solid var(--line);border-radius:999px;padding:6px 12px;font:600 13px Inter;cursor:pointer}
 .cc-chips button.on{background:var(--acc);border-color:var(--acc);color:#111}
-.cc-save{position:sticky;bottom:-24px;background:#161414;padding:12px 0;margin-top:14px;z-index:2}
+.cc-save{position:sticky;bottom:-24px;background:#161414;padding:12px 0;margin-top:14px;z-index:10}
 .lvl{display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:20px;padding:0 5px;margin-right:6px;border-radius:6px;font:800 12px 'Barlow Condensed',sans-serif;color:#141210;background:#9aa3ad;vertical-align:2px}
 .lvl.t1{background:#7dd3fc}.lvl.t2{background:#86efac}.lvl.t3{background:#c084fc}.lvl.t4{background:#ffcf3f}.lvl.t5{background:linear-gradient(135deg,#ffcf3f,#ff7a1a);color:#fff;text-shadow:0 1px 0 #0006}
 .pa-l{display:flex;align-items:center;gap:2px;font:600 10.5px Inter;color:var(--mut);margin-top:3px}.pa-l .lvl{margin-right:2px;height:17px;font-size:11px}
@@ -1014,6 +1068,8 @@ function goHome(){viewSeason=null;go(homeRoute())}
 let homePending=!location.hash.slice(1);
 function maybeHome(){if(!homePending||!loaded.p||!loaded.t)return;homePending=false;const r=homeRoute();if(r.v!=="classement")go(r)}
 function go(r){const h=hashOf(r);if(location.hash.slice(1)===h){route=r;render()}else{try{location.hash=h}catch(e){route=r;render()}}window.scrollTo(0,0)}
+/* Changer d'onglet sans remonter en haut de la page */
+function goTab(r){const y=window.scrollY;route=r;try{history.replaceState(null,"","#"+hashOf(r))}catch(e){}render();requestAnimationFrame(()=>window.scrollTo(0,y))}
 window.addEventListener("hashchange",()=>{const r=parseHash();if(route.focus&&r.v==="tournoi"&&r.id===route.id)r.focus=route.focus;route=r;render()});
 
 const pname=id=>players[id]?`<a class="lk ${players[id].g==="F"&&adminOn()?"F":""}" onclick="go({v:'joueur',id:'${id}'})">${esc(players[id].name)}</a>`:`<span class="muted">(supprimé)</span>`;
@@ -1088,7 +1144,7 @@ function render(){
   items.push({k:"reglement",l:"📖 Règles"});
   if(sc) items.push({k:"table",l:"⏱️ Table"});
   const onLive=lt&&((route.v==="tournoi"&&route.id===lt.id)||(ls&&route.v==="session"));
-  const cur=onLive?"live":route.v==="joueur"?"classement":route.v==="tournoi"?"tournois":ADMIN_VIEWS.includes(route.v)?"admin":route.v;
+  const cur=onLive?"live":route.v==="joueur"?"classement":route.v==="tournoi"?(tournaments[route.id]&&isSession(tournaments[route.id])?"session":"tournois"):ADMIN_VIEWS.includes(route.v)?"admin":route.v;
   const aviews=adminOn()?[["admin",""]]:[];
   nav.innerHTML=items.map(x=>`<button class="${cur===x.k?"on":""} ${x.live?"navlive":""}" onclick="${x.go||`go({v:'${x.k}'})`}">${x.l}</button>`).join("")+aviews.map(([k,l])=>`<button class="adm ${cur===k?"on":""}" title="Admin" aria-label="Admin" onclick="go({v:'${k}'})">⚙${todoCount()?`<span class="todo-dot">${todoCount()}</span>`:""}</button>`).join("");
   nav.querySelector("button.on")?.scrollIntoView({inline:"nearest",block:"nearest"});
@@ -1098,6 +1154,7 @@ function render(){
   ({classement:vClass,tournois:vTourn,tournoi:vTournoi,joueur:vJoueur,simulateur:vSimu,reglement:vRegles,joueurs:vJoueurs,reglages:vReglages,donnees:vDonnees,table:vTable,calibrage:vCalib,visuels:vVisuels,acces:vAcces,admin:vAdmin,session:vSession,duel:vDuel})[route.v]();
   if(ADMIN_VIEWS.includes(route.v)) app.insertAdjacentHTML("afterbegin",`<button class="back" onclick="go({v:'admin'})">← Admin</button>`);
   if(route.v!=="table"&&route.v!=="session"){const ab=annBannerHTML();if(ab)app.insertAdjacentHTML("afterbegin",ab)}
+  if(route.v!=="table"){const jb=sessJoinBannerHTML();if(jb)app.insertAdjacentHTML("afterbegin",jb)}
   if(simBanner()) app.insertAdjacentHTML("afterbegin",simBanner());
   if(!AUTO_GO&&loaded.p&&loaded.t){AUTO_GO=true;const lt=liveTournament(),me=meId();if(lt&&me&&myTeamIn(lt,me)&&isToday(lt)&&route.v==="classement"){route={v:"tournoi",id:lt.id};return render()}}
   setTimeout(()=>{checkLevelUp();try{puScan();lateAlertScan();puNext()}catch(e){}},400);
@@ -1267,7 +1324,7 @@ function playerStatsHTML(pid){
     ${S.bestT?row("⭐","Meilleur tournoi",`<b class="w">+${S.bestT.total}</b>`,`${esc(S.bestT.name.replace(/\s*\(démo\)/i,""))}${S.bestT.place?` · ${S.bestT.place}${S.bestT.place===1?"er":"e"}`:""}`,`go({v:'tournoi',id:'${S.bestT.tid}'})`):""}
     ${phases?row("🏆","Victoires par phase","",phases):""}
   </div>
-  <div class="ps-sec">Tournois de la saison</div>`;
+  <div class="ps-sec">Participation saison ${esc(sLab(cfg().season))}</div>`;
 }
 
 /* Petite bulle d'explication au toucher d'une stat */
@@ -1334,17 +1391,17 @@ function vTournoi(){
   const order=T.status==="done"?["classement","finale","groupes","matchs","equipes"]
     :T.status==="live"?(hasBr?["matchs","finale","groupes","classement","equipes"]:["matchs","groupes","finale","classement","equipes"])
     :["equipes","groupes","matchs","finale","classement"];
-  TL.joueurs="Joueurs";
-  const ord=isSession(T)?(T.status==="done"?["joueurs","matchs"]:["matchs","joueurs"]):order;
+  TL.joueurs="Classement";
+  const ord=isSession(T)?["joueurs","matchs"]:order;
   const tabs=ord.map(k=>[k,TL[k]]);
   let tab=route.tab; if(!tabs.some(t=>t[0]===tab)) tab=ord[0];
-  app.innerHTML=`<button class="back" onclick="go({v:'tournois'})">← Tournois</button>
+  app.innerHTML=`${isSession(T)?`<button class="back" onclick="go({v:'session'})">← Sessions</button>`:`<button class="back" onclick="go({v:'tournois'})">← Tournois</button>`}
   <h2 style="margin-bottom:2px">${esc(T.name)} ${T.status==="live"?'<span class="tag live">EN COURS</span>':`<span class="tag">${STATUS[T.status]}</span>`}</h2>
-  <div class="muted">${fmtDate(T.date)}${T.place?" · "+esc(T.place):""}<br>${isSession(T)?`Session de jeu · ${(T.matches||[]).filter(scored).length} matchs · ${new Set((T.teams||[]).flatMap(t=>t.roster)).size} joueurs`:formatLabel(T)+` · ${(T.teams||[]).length} équipes`}</div>
+  <div class="muted">${fmtDate(T.date)}${T.place?" · "+esc(T.place):""}<br>${isSession(T)?(()=>{const j=new Set((T.teams||[]).flatMap(t=>t.roster)).size,m=(T.matches||[]).filter(scored).length;return `${j} joueur${j>1?"s":""} · ${m} match${m>1?"s":""}`})():formatLabel(T)+` · ${(T.teams||[]).length} équipes`}</div>
   ${isSession(T)&&T.status==="live"&&scorerOn()?`<button class="btn" style="margin-top:10px" onclick="SS.tid='${T.id}';go({v:'session'})">🏀 Ajouter un match</button>`:""}
-  ${!isSession(T)?regBoxHTML(T):""}${myTourHTML(T)}
+  ${!isSession(T)?regBoxHTML(T):""}${myTourHTML(T)}${isSession(T)&&T.status==="live"?sessPresCardHTML(T):""}
   ${A?adminTournamentBar(T):""}${liveAdminHTML(T)}${T.status==="live"?liveCourtsHTML(T):""}
-  <div class="seg" style="margin-top:10px">${tabs.map(([k,l])=>`<button class="${tab===k?"on":""}" onclick="go({v:'tournoi',id:'${T.id}',tab:'${k}'})">${l}</button>`).join("")}</div>
+  <div class="seg" style="margin-top:10px">${tabs.map(([k,l])=>`<button class="${tab===k?"on":""}" onclick="goTab({v:'tournoi',id:'${T.id}',tab:'${k}'})">${l}</button>`).join("")}</div>
   <div id="tabc"></div>`;
   const c=document.getElementById("tabc");
   ({classement:tabClassement,finale:tabFinale,groupes:tabGroupes,matchs:tabMatchs,equipes:tabEquipes,joueurs:tabJoueursSession})[tab](T,R,A,c);
@@ -1404,6 +1461,13 @@ function tabGroupes(T,R,A,c){
     <div class="grp-box"><div class="grp-box-t">Classement</div><table><thead><tr><th>Équipe</th><th class="n">${hd?"V-N-D":"V-D"}</th><th class="n">Diff</th><th class="n">Pts</th></tr></thead><tbody>
     ${s.map((r,i)=>`<tr><td class="${i<q?"bold":""}">${esc(teamOf(T,r.t)?.name)} <span class="muted">${comp(teamOf(T,r.t)?.roster||[])}</span></td><td class="n">${r.w}-${hd?r.n+"-":""}${r.l}</td><td class="n">${r.d>0?"+":""}${r.d}</td><td class="n bold" style="color:var(--acc2)">${groupPts(r)}</td></tr>`).join("")||`<tr><td class="muted">Aucune équipe</td></tr>`}
     </tbody></table></div><div class="grp-sep"><span>Matchs poule ${p}</span></div><div>${(T.matches||[]).filter(m=>m.stage==="pool"&&m.pool===p).map(m=>mline(T,R,A,m)).join("")}</div></div>`}).join("")}</div>`;
+}
+/* Détail d'un match dans une fenêtre (écran Session admin) */
+function mMatchModal(tid,mid){
+  const T0=tournaments[tid]; if(!T0) return; const T={...T0,id:tid}, m=(T.matches||[]).find(x=>x.id===mid); if(!m) return;
+  const R=RES[tid]||{matchInfo:{},bonus:{}};
+  route.focus=mid; const html=matchCard(T,R,adminOn(),m); route.focus=null;
+  modal(`<div class="mm-wrap">${html}</div><button class="btn sec" style="width:100%;margin-top:10px" onclick="closeModal()">Fermer</button>`);
 }
 function matchCard(T,R,A,m){
   const a=teamOf(T,m.a),b=teamOf(T,m.b),i=R.matchInfo[m.id],s=scored(m);
@@ -1813,7 +1877,8 @@ async function saveMatch(tid,mid){
     if(!Number.isFinite(a)||!Number.isFinite(b)||a<0||b<0||a>60||b>60) return toast("Score invalide");
     if(a===b&&tournaments[tid].matches.find(x=>x.id===mid)?.stage==="bracket") return toast("Pas de match nul en phase finale : prolongation");}
   document.activeElement?.blur();
-  if(await commitScore(tid,mid,a,b,v("tm"),v("ct"))) toast("Match enregistré");
+  const inModal=!!document.querySelector("#mbox #sa-"+mid);
+  if(await commitScore(tid,mid,a,b,v("tm"),v("ct"))){toast("Match enregistré");if(inModal)closeModal()}
 }
 
 /* ---------- Table de marque ---------- */
@@ -2656,11 +2721,11 @@ function checkLevelUp(){
    JOUR DE TOURNOI : tableau de bord joueur, pop-ups, annonces, présence,
    scores en direct, vote MVP, récap de fin de journée
    ===================================================================== */
-var LIVE={}, ONCOURT={}, PRES={}, VOTES={}, liveUnsub=null;
+var LIVE={}, ONCOURT={}, PRES={}, VOTES={}, SJOIN={}, liveUnsub=null;
 function liveSubscribe(){
   if(!DB||liveUnsub) return; liveUnsub=true;
   const sub=(col,set)=>DB.collection(col).onSnapshot(s=>{const o={};s.docs.forEach(d=>o[d.id]=clone(d.data()));set(o);scheduleRender()},()=>{});
-  sub("live",o=>LIVE=o); sub("onCourt",o=>ONCOURT=o); sub("presence",o=>PRES=o); sub("votes",o=>VOTES=o);
+  sub("live",o=>LIVE=o); sub("onCourt",o=>ONCOURT=o); sub("presence",o=>PRES=o); sub("votes",o=>VOTES=o); sub("sessionJoin",o=>SJOIN=o);
 }
 const nowMin=()=>{const d=new Date();return d.getHours()*60+d.getMinutes()};
 const isToday=T=>!T.date||T.date===new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,10);
@@ -2734,8 +2799,37 @@ function myStatus(T,team){
 }
 
 /* ---------- Tableau de bord « Mon tournoi » ---------- */
+function mySessionHTML(T){
+  const id=meId(); if(!id||!players[id]) return "";
+  const tid=tidOf(T), R=RES[tid]||{matchInfo:{}}, P=sessPresent({...T,id:tid});
+  const {rows,prank,last,lastPl}=sessRanking({...T,id:tid},R);
+  const i=rows.findIndex(r=>r.p===id), me=rows[i];
+  const playing=(T.matches||[]).find(m=>!scored(m)&&[m.a,m.b].some(t=>teamOf(T,t)?.roster.includes(id)));
+  const vs=m=>{const mt=[m.a,m.b].map(t=>teamOf(T,t)), my=mt.findIndex(t=>t?.roster.includes(id));return {mine:mt[my],opp:mt[1-my],my}};
+  let now="";
+  if(playing){const v=vs(playing);now=`<div class="ms-now">🏀 <b>À toi de jouer</b> · contre ${esc(v.opp?.name||"?")}</div>`}
+  else if(P.has(id)&&!me) now=`<div class="ms-now muted">✅ Tu es dans la session</div>`;
+  const H=`<div class="ms-h"><span>🏀 Ma session</span><span class="ms-who">${esc(pCall(id))}${isSite()?"":` · <a onclick="mPickMe()">changer</a>`}</span></div>`;
+  if(!me) return now?`<div class="card ms-card">${H}${now}</div>`:"";
+  const L=st[id].log.filter(l=>l.tid===tid);
+  let streak=0; for(let k=L.length-1;k>=0&&L[k].res===L[L.length-1].res&&L[k].res!==.5;k--) streak++;
+  const lw=L[L.length-1].res===1;
+  const pr=prank[id], d=pr?pr-(i+1):0;
+  const arrow=!last?"":!pr?`<span class="sr-mv new" style="display:inline">NEW</span>`:d>0?`<span class="sr-mv up" style="display:inline">▲${d}</span>`:d<0?`<span class="sr-mv dn" style="display:inline">▼${-d}</span>`:"";
+  const col=v=>v>0?"#58d68d":v<0?"var(--loss)":"inherit";
+  return `<div class="card ms-card">${H}
+    <div class="ms-grid">
+      <div><b>${i+1}<sup>${i?"e":"er"}</sup></b><small>sur ${rows.length} ${arrow}</small></div>
+      <div><b style="color:${col(me.t)}">${me.t>0?"+":""}${me.t}</b><small>points</small></div>
+      <div><b>${me.n?`${me.w}-${me.n}-${me.l}`:`${me.w}-${me.l}`}</b><small>${me.n?"V-N-D":"V-D"} · ${me.g} match${me.g>1?"s":""}</small></div>
+      <div><b>${streak>1?(lw?"🔥":"🧊")+streak:Math.round(me.w/me.g*100)+"%"}</b><small>${streak>1?(lw?"victoires de suite":"défaites de suite"):"victoires"}</small></div>
+    </div>
+    <div class="ms-list">${L.slice().reverse().map(l=>`<div class="ms-last" onclick="mMatchModal('${tid}','${l.mid}')"><span class="ms-r ${l.res===1?"w":l.res===.5?"n":"l"}">${l.res===1?"V":l.res===.5?"N":"D"}</span><span class="ms-o">vs ${esc(l.opp)}</span><b>${l.me}-${l.op}</b><b class="ms-d" style="color:${col(l.d)}">${l.d>0?"+":""}${l.d}</b></div>`).join("")}</div>
+    ${now}</div>`;
+}
 function myTourHTML(T){
-  if(!T||isSession(T)&&T.status!=="live") return "";
+  if(T&&isSession(T)) return T.status==="live"?mySessionHTML(T):"";
+  if(!T) return "";
   const id=meId(); if(!id||!players[id]) return isSession(T)?"":nextMatchHTML(T);
   const team=myTeamIn(T,id); if(!team||T.status==="planned"&&!isToday(T)) return isSession(T)?"":nextMatchHTML(T);
   if(T.status==="done") return "";
@@ -2828,7 +2922,7 @@ function clearOnCourt(tid,mid){const k=tid+"-"+mid;if(ONCOURT[k]){delete ONCOURT
 
 /* ---------- Panneau admin « Direct » ---------- */
 function liveAdminHTML(T){
-  if(!adminOn()||T.status==="done"&&!(liveOf(T.id).mvp)) return "";
+  if(!adminOn()||isSession(T)||T.status==="done"&&!(liveOf(T.id).mvp)) return "";
   const L=liveOf(T.id), P=pauseOn(T.id), ann=(L.ann||[]).filter(a=>Date.now()-a.at<8*3600e3).slice().reverse();
   const teams=T.teams||[], pres=teams.map(t=>({t,p:PRES[T.id+"-"+t.id]||{}}));
   const nIn=pres.filter(x=>x.p.in).length, mv=mvpResults(T.id);
@@ -2874,7 +2968,7 @@ function puNext(){
 setInterval(()=>{try{puScan();puNext()}catch(e){}},20000);
 function puScan(){
   const id=meId(); if(!id||!players[id]) return;
-  const list=Object.entries(tournaments).map(([k,T])=>({...T,id:k})).filter(T=>T.status==="live"||T.status==="done"&&isToday(T));
+  const list=Object.entries(tournaments).map(([k,T])=>({...T,id:k})).filter(T=>!isSession(T)&&(T.status==="live"||T.status==="done"&&isToday(T)));
   for(const T of list){
     const team=myTeamIn(T,id); if(!team) continue;
     const key="pu-"+T.id+"-"+id; let S=lsGet(key);
@@ -3090,6 +3184,113 @@ function sessionsHistoryHTML(){
     (!cur.length?`<div class="empty">Aucune session cette saison pour l'instant.</div>`:"")+
     (pastS.length?`<h2>Saisons précédentes</h2>`+pastS.map(S=>{const l=all.filter(t=>seasonOf(t,C)===S).reverse();return `<details class="card"><summary class="bold" style="cursor:pointer">Saison ${esc(sLab(S))} · ${l.length} session(s)</summary><div style="margin-top:10px">${l.map(tournamentTile).join("")}</div></details>`}).join(""):"");
 }
+/* =====================================================================
+   SESSION : joueurs présents (auto-inscription, liste, sortie par glisser)
+   ===================================================================== */
+const sessJoinsOf=tid=>Object.keys(SJOIN).filter(k=>SJOIN[k]&&SJOIN[k].tid===tid);
+const tidOf=T=>T.id||Object.keys(tournaments).find(k=>tournaments[k]===T)||"";
+function sessPresent(T){
+  const s=new Set((T.present||[]).filter(p=>players[p]));
+  sessJoinsOf(tidOf(T)).forEach(k=>{const p=SJOIN[k].pid;if(players[p])s.add(p)});
+  return s;
+}
+/* Fixe la liste exacte des présents : écrit T.present et supprime les auto-inscriptions des joueurs retirés. */
+async function sessSetPresent(tid,ids){
+  const keep=new Set(ids), T=getT(tid); T.present=[...keep]; await saveT(T);
+  for(const k of sessJoinsOf(tid)) if(!keep.has(SJOIN[k].pid)){delete SJOIN[k];scheduleRender();await delDoc("sessionJoin/"+k)}
+}
+const sessMe=()=>isSite()?(typeof myPid==="function"?myPid():""):meId();
+function sessJoinBannerHTML(){
+  const T=liveTournament(); if(!T||!isSession(T)) return "";
+  const id=sessMe(); if(!id||!players[id]||sessPresent(T).has(id)) return "";
+  const n=sessPresent(T).size;
+  return `<div class="card sj-ban"><div class="sj-ic">🏀</div><div style="flex:1;min-width:0"><b>Session en cours</b><div class="muted" style="font-size:12px">${esc(T.name)} · ${n} joueur${n>1?"s":""} présent${n>1?"s":""}</div></div>
+    <button class="btn sj-go" onclick="joinSession('${T.id}')">🏀 Rentrer dans la session</button></div>`;
+}
+async function joinSession(tid){
+  if(isSite()&&!FBUSER){toast("Connecte-toi pour rentrer dans la session",3000);return mRole()}
+  const id=sessMe(); if(!id||!players[id]) return toast("Relie d'abord ton compte à ta fiche joueur",3000);
+  const T=tournaments[tid]; if(!T||T.status!=="live") return toast("Cette session est terminée");
+  if(sessPresent(T).has(id)) return toast("Tu es déjà dans la session");
+  const k=tid+"_"+id, d={tid,pid:id,uid:voterId(),at:Date.now()}; SJOIN[k]=d; scheduleRender();
+  if(await write("sessionJoin/"+k,()=>DB.doc("sessionJoin/"+k).set(d))) toast("✅ Tu es dans la session, bon jeu !");
+  else {delete SJOIN[k];scheduleRender()}
+}
+async function leaveSession(tid){
+  const id=sessMe(), k=tid+"_"+id; if(!SJOIN[k]) return;
+  if(!await ask("Quitter la session ?")) return;
+  delete SJOIN[k]; scheduleRender(); await delDoc("sessionJoin/"+k); toast("Tu as quitté la session");
+}
+/* Liste des présents (chips avec icône). admin=true : glisser vers 🚪 pour retirer. */
+function sessPresListHTML(T,admin){
+  const P=sessPresent(T); if(!P.size) return "";
+  const busy=sessionBusy(T), w=sessionWait(T), me=sessMe();
+  const ids=[...P].sort((a,b)=>(busy.has(a)-busy.has(b))||(w[b]-w[a])||pCall(a).localeCompare(pCall(b)));
+  return `<div class="sp-list ${admin?"adm":""}">${ids.map(id=>`<div class="sp-chip ${busy.has(id)?"busy":""} ${id===me?"me":""}" data-id="${id}" ${admin?`onpointerdown="spDown(event,'${id}')"`:`onclick="go({v:'joueur',id:'${id}'})"`}>${avatarHTML(id,26)}<span>${esc(pCall(id))}</span>${busy.has(id)?'<i title="En match">🏀</i>':""}</div>`).join("")}</div>
+  ${admin?`<div class="muted sp-hint">Glisse un joueur sur 🚪 pour le sortir de la session${busy.size?" · 🏀 = en match":""}</div>`:""}`;
+}
+function sessPresCardHTML(T){
+  const P=sessPresent(T), me=sessMe(), mine=me&&SJOIN[tidOf(T)+"_"+me];
+  return `<div class="card ss-pres" style="margin-top:10px"><div class="row" style="justify-content:space-between;align-items:center"><b style="flex:3">👥 Joueurs présents : ${P.size}</b>
+    ${mine?`<button class="btn sm sec" style="flex:none" onclick="leaveSession('${tidOf(T)}')">Quitter</button>`:""}</div>
+    ${P.size?sessPresListHTML(T,false):`<div class="muted" style="margin-top:6px">Personne pour l'instant.</div>`}</div>`;
+}
+async function sessRemove(id){
+  const T=tournaments[SS.tid]; if(!T||!players[id]) return;
+  const ids=[...sessPresent(T)].filter(p=>p!==id); delete SS.sel[id];
+  await sessSetPresent(SS.tid,ids); toast(`🚪 ${pCall(id)} est sorti(e) de la session`);
+}
+/* Glisser-déposer (souris + tactile) vers la porte de sortie */
+let SPD=null;
+function spDown(e,id){
+  if(e.button>0) return; const el=e.currentTarget;
+  SPD={id,x:e.clientX,y:e.clientY,el,ghost:null,moved:false,pid:e.pointerId};
+  try{el.setPointerCapture(e.pointerId)}catch(_){}
+}
+function spDoorHot(x,y){const d=document.getElementById("spDoor");if(!d)return false;const r=d.getBoundingClientRect(),m=14;return x>=r.left-m&&x<=r.right+m&&y>=r.top-m&&y<=r.bottom+m}
+document.addEventListener("pointermove",e=>{
+  if(!SPD) return; const dx=e.clientX-SPD.x, dy=e.clientY-SPD.y;
+  if(!SPD.moved){ if(Math.hypot(dx,dy)<8) return; SPD.moved=true;
+    const g=SPD.el.cloneNode(true); g.className="sp-chip sp-ghost"; g.removeAttribute("onpointerdown"); document.body.appendChild(g); SPD.ghost=g;
+    SPD.el.classList.add("drag"); document.body.classList.add("sp-dragging"); }
+  e.preventDefault();
+  SPD.ghost.style.left=e.clientX+"px"; SPD.ghost.style.top=e.clientY+"px";
+  const hot=spDoorHot(e.clientX,e.clientY); document.getElementById("spDoor")?.classList.toggle("hot",hot); SPD.ghost.classList.toggle("out",hot);
+},{passive:false});
+function spEnd(e,cancel){
+  if(!SPD) return; const S=SPD; SPD=null;
+  S.ghost?.remove(); S.el.classList.remove("drag"); document.body.classList.remove("sp-dragging"); document.getElementById("spDoor")?.classList.remove("hot");
+  if(cancel) return;
+  if(S.moved){ if(spDoorHot(e.clientX,e.clientY)) sessRemove(S.id); }
+  else sessionPick(S.id);
+}
+document.addEventListener("pointerup",e=>spEnd(e,false));
+document.addEventListener("pointercancel",e=>spEnd(e,true));
+/* Ajouter des joueurs (liste de tous les joueurs du site + recherche) */
+function mAddPresent(){
+  const T=tournaments[SS.tid], cur=sessPresent(T);
+  const ids=Object.keys(players).filter(id=>!cur.has(id)).sort((a,b)=>pCall(a).localeCompare(pCall(b)));
+  modal(`<h3>➕ Ajouter des joueurs</h3><div class="muted" style="margin-bottom:8px">Touche les joueurs à ajouter : <b id="apCnt">0</b> sélectionné(s).</div>
+  <input id="apQ" placeholder="🔎 Rechercher un joueur…" autocomplete="off" oninput="const q=normName(this.value);let n=0;document.querySelectorAll('#apChips .ss-chip').forEach(c=>{const v=c.dataset.n.includes(q);c.style.display=v?'':'none';n+=v});document.getElementById('apNone').style.display=n?'none':''">
+  <div class="ss-chips" id="apChips" style="max-height:44vh">${ids.map(id=>`<button class="ss-chip ap-chip" data-id="${id}" data-n="${esc(normName(players[id].name+" "+pFull(players[id])+" "+pCall(id)))}" onclick="this.classList.toggle('pres');document.getElementById('apCnt').textContent=document.querySelectorAll('#apChips .pres').length">${avatarHTML(id,22)}<span>${esc(pCall(id))}</span></button>`).join("")}</div>
+  <div id="apNone" class="muted" style="display:${ids.length?"none":""};margin-top:8px">${ids.length?"Aucun joueur trouvé.":"Tous les joueurs sont déjà dans la session."}</div>
+  <details style="margin-top:10px"><summary class="muted" style="cursor:pointer">Joueur pas encore inscrit sur le site ?</summary>${npFields("apN")}<div class="row" style="margin-top:6px"><select id="apG"><option value="H">Homme</option><option value="F">Femme</option></select><button class="btn sm sec" style="flex:none" onclick="addPresentNew()">Créer et ajouter</button></div></details>
+  <div class="row" style="margin-top:14px"><button class="btn" onclick="saveAddPresent()">Ajouter</button><button class="btn sec" onclick="closeModal()">Annuler</button></div>`);
+  setTimeout(()=>document.getElementById("apQ")?.focus(),60);
+}
+async function saveAddPresent(){
+  const ids=[...document.querySelectorAll("#apChips .pres")].map(b=>b.dataset.id); closeModal();
+  if(!ids.length) return;
+  const T=getT(SS.tid); T.present=[...new Set([...(T.present||[]),...ids])]; await saveT(T);
+  toast(ids.length>1?`${ids.length} joueurs ajoutés`:`${pCall(ids[0])} ajouté(e)`);
+}
+async function addPresentNew(){
+  const r=npRead("apN"); if(!r) return; const g=document.getElementById("apG").value;
+  const sel=[...document.querySelectorAll("#apChips .pres")].map(b=>b.dataset.id);
+  const id=uid(); closeModal(); await saveP(id,{...r,g,createdAt:Date.now()});
+  const T=getT(SS.tid); T.present=[...new Set([...(T.present||[]),...sel,id])]; await saveT(T);
+  toast(`${r.name} créé(e) et ajouté(e)${sel.length?` (+${sel.length})`:""}`);
+}
 function vSession(){
   if(!scorerOn()){app.innerHTML=`<h2 style="margin-bottom:4px">🏀 Sessions</h2><div class="muted" style="margin-bottom:6px">Matchs libres hors tournoi : chaque match compte pour le classement (sans bonus).</div>`+sessionsHistoryHTML();return}
   const C=cfg(), live=liveSessions();
@@ -3105,31 +3306,31 @@ function vSession(){
   }
   const T=tournaments[SS.tid], ms=(T.matches||[]), played=ms.filter(scored).reverse(), todo=ms.filter(m=>!scored(m));
   const inSession=new Set((T.teams||[]).flatMap(t=>t.roster));
-  const present=new Set((T.present||[]).filter(p=>players[p])), wait=sessionWait(T), busy=sessionBusy(T);
-  const pool=SS.showAll||!present.size?Object.keys(players):[...present];
-  const ids=pool.filter(id=>!SS.q||normName(players[id].name).includes(normName(SS.q)))
-    .sort((a,b)=>(present.has(b)-present.has(a))||(busy.has(a)-busy.has(b))||(wait[b]-wait[a])||players[a].name.localeCompare(players[b].name));
+  const present=sessPresent(T), wait=sessionWait(T), busy=sessionBusy(T);
   const avail=[...present].filter(p=>!busy.has(p)).length;
+  Object.keys(SS.sel).forEach(k=>{if(!present.has(k))delete SS.sel[k]});
+  const pids=[...present].sort((a,b)=>(busy.has(a)-busy.has(b))||(wait[b]-wait[a])||pCall(a).localeCompare(pCall(b)));
+  const calls={}; pids.forEach(id=>calls[pCall(id)]=(calls[pCall(id)]||0)+1);
+  const lab=id=>calls[pCall(id)]>1?String(players[id].name||"").replace(/\s*\(démo\)/i,""):pCall(id);
+  const r1=pids.filter(k=>SS.sel[k]===1), r2=pids.filter(k=>SS.sel[k]===2);
   const n1=Object.values(SS.sel).filter(v=>v===1).length, n2=Object.values(SS.sel).filter(v=>v===2).length, ok=n1>=1&&n2>=1&&n1<=4&&n2<=4;
   const last=[...ms].reverse().find(m=>teamOf(T,m.a)&&teamOf(T,m.b));
-  const tline=(m)=>{const a=teamOf(T,m.a),b=teamOf(T,m.b);return `<div class="match" style="cursor:pointer" onclick="openMatch('${T.id}','${m.id}')"><span class="t ${scored(m)&&m.sa>m.sb?"bold":""}">${esc(a?.name)}</span><span class="sc">${scored(m)?`${m.sa}-${m.sb}`:'<span class="muted" style="font:500 12px Inter">à jouer</span>'}</span><span class="t r ${scored(m)&&m.sb>m.sa?"bold":""}">${esc(b?.name)}</span></div>`};
+  const tline=(m)=>{const a=teamOf(T,m.a),b=teamOf(T,m.b);return `<div class="match" style="cursor:pointer" onclick="mMatchModal('${SS.tid}','${m.id}')"><span class="t ${scored(m)&&m.sa>m.sb?"bold":""}">${esc(a?.name)}</span><span class="sc">${scored(m)?`${m.sa}-${m.sb}`:'<span class="muted" style="font:500 12px Inter">à jouer</span>'}</span><span class="t r ${scored(m)&&m.sb>m.sa?"bold":""}">${esc(b?.name)}</span></div>`};
   app.innerHTML=`<div class="row" style="justify-content:space-between;align-items:flex-start"><div style="flex:3"><h2 style="margin-bottom:2px">${esc(T.name)} <span class="tag live">EN COURS</span></h2><div class="muted">${played.length} match${played.length>1?"s":""} joué${played.length>1?"s":""} · ${inSession.size} joueur${inSession.size>1?"s":""}</div></div>
     <button class="btn sm sec" style="flex:none" onclick="endSession()">Terminer</button></div>
   ${todo.length?`<h3 style="margin-top:14px">À jouer</h3>${todo.map(m=>`<div class="card" style="padding:10px 14px">${tline(m)}<div class="row" style="margin-top:8px"><button class="btn sm" onclick="sessionToTable('${m.id}')">⏱ Table de marque</button><button class="btn sm sec" onclick="sessionScore('${m.id}')">✍️ Score final</button><button class="btn sm dng" style="flex:none" onclick="sessionDel('${m.id}')">✕</button></div></div>`).join("")}`:""}
-  <div class="card ss-pres"><div class="row" style="justify-content:space-between"><div style="flex:3"><b>👥 Joueurs présents : ${present.size}</b><div class="muted" style="font-size:12px">${present.size?`${avail} disponible${avail>1?"s":""} pour le prochain match`:"Coche les joueurs présents pour composer les matchs plus vite."}</div></div>
-    <button class="btn sm ${present.size?"sec":""}" style="flex:none" onclick="mPresent()">${present.size?"Modifier":"Ajouter"}</button></div></div>
   <h3 style="margin-top:14px">Nouveau match</h3>
-  <div class="card">
-    ${present.size?`<div class="row ss-rand"><div class="seg" style="margin:0;flex:none">${[2,3,4].map(n=>`<button class="${SS.size===n?"on":""}" onclick="SS.size=${n};render()">${n}v${n}</button>`).join("")}</div>
-      <button class="btn" onclick="sessionRandom()">🎲 Aléatoire</button><button class="btn sec" onclick="sessionBalanced()">⚖️ Équilibrées</button></div>
-      <div class="muted" style="font-size:12px;margin:6px 0 10px">Les joueurs qui attendent depuis le plus longtemps passent en priorité.</div>`:""}
-    <div class="ss-teams"><div class="ss-t1">Équipe 1 <b>${n1}</b></div><div class="ss-t2">Équipe 2 <b>${n2}</b></div></div>
-    <div class="muted" style="margin:6px 0">Touchez un joueur : 1er appui → équipe 1, 2e → équipe 2, 3e → retiré.</div>
-    ${last?`<div class="row" style="margin-bottom:8px"><button class="btn sm sec" onclick="sessionSame('${last.id}',false)">↺ Mêmes équipes</button><button class="btn sm sec" onclick="sessionSame('${last.id}',true)">⇄ Équipes inversées</button>${n1+n2?`<button class="btn sm sec" style="flex:none" onclick="SS.sel={};render()">Vider</button>`:""}</div>`:""}
-    <input placeholder="Rechercher un joueur…" value="${esc(SS.q)}" oninput="SS.q=this.value;clearTimeout(window._ssq);window._ssq=setTimeout(()=>{render();const i=document.querySelector('#app input');if(i){i.focus();i.setSelectionRange(i.value.length,i.value.length)}},250)">
-    <div class="ss-chips">${ids.map(id=>`<button class="ss-chip ${SS.sel[id]===1?"on1":SS.sel[id]===2?"on2":""} ${inSession.has(id)?"seen":""} ${busy.has(id)?"busy":""}" onclick="sessionPick('${id}')">${esc(players[id].name.replace(/\s*\(démo\)/i,""))}${present.has(id)&&!busy.has(id)&&wait[id]>=1?`<span class="ss-wait">⏳${wait[id]>=99?"":wait[id]}</span>`:""}${busy.has(id)?`<span class="ss-wait">en jeu</span>`:""}</button>`).join("")||'<span class="muted">Aucun joueur trouvé.</span>'}</div>
-    ${present.size?`<button class="ss-all" onclick="SS.showAll=!SS.showAll;render()">${SS.showAll?"Afficher seulement les présents":"Afficher tous les joueurs"}</button>`:""}
-    <details class="ss-new"><summary>+ Nouveau joueur</summary>${npFields("ssN")}<div class="row" style="margin-top:6px"><select id="ssG"><option>H</option><option>F</option></select><button class="btn sm sec" style="flex:none" onclick="sessionAddPlayer()">Ajouter</button></div></details>
+  <div class="card ss-pres">
+    <div class="row sp-head"><div style="flex:1;min-width:0"><b>👥 ${present.size} présent${present.size>1?"s":""}</b>${present.size?`<span class="muted"> · ${avail} dispo</span>`:""}</div>
+      <button class="sp-add" title="Ajouter un joueur" onclick="mAddPresent()">➕<small>Ajouter</small></button>
+      ${present.size?`<div id="spDoor" class="sp-door" title="Glisse un joueur ici pour le sortir de la session">🚪<small>Sortie</small></div>`:""}</div>
+    ${present.size?`<div class="sp-list adm">${pids.map(id=>{const t=SS.sel[id];return `<div class="sp-chip ${t===1?"on1":t===2?"on2":""} ${busy.has(id)?"busy":""}" onpointerdown="spDown(event,'${id}')">${avatarHTML(id,26)}<span>${esc(lab(id))}</span>${busy.has(id)?"<i>🏀</i>":wait[id]>=1?`<i class="w">⏳${wait[id]>=99?"":wait[id]}</i>`:""}</div>`}).join("")}</div>
+    <div class="muted sp-hint">Touche : 1× équipe 1 · 2× équipe 2 · 3× retiré — glisse sur 🚪 pour sortir · ⏳ = matchs d'attente</div>`
+    :`<div class="muted" style="margin-top:8px">Personne pour l'instant : les joueurs rentrent depuis leur fiche, ou ajoute-les avec ➕.</div>`}
+    ${present.size?`<div class="row ss-rand" style="margin-top:12px"><div class="seg" style="margin:0">${[2,3,4].map(n=>`<button class="${SS.size===n?"on":""}" onclick="SS.size=${n};render()">${n}v${n}</button>`).join("")}</div>
+      <button class="btn sm" onclick="sessionRandom()" title="Les joueurs qui attendent le plus passent en priorité">🎲 Aléatoire</button><button class="btn sm sec" onclick="sessionBalanced()">⚖️ Équilibré</button></div>`:""}
+    <div class="ss-teams" style="margin-top:10px"><div class="ss-t1"><span>Équipe 1</span><small>${r1.map(lab).map(esc).join(", ")||"—"}</small></div><div class="ss-t2"><span>Équipe 2</span><small>${r2.map(lab).map(esc).join(", ")||"—"}</small></div></div>
+    ${last||n1+n2?`<div class="row sp-tools">${last?`<button onclick="sessionSame('${last.id}',false)">↺ Mêmes</button><button onclick="sessionSame('${last.id}',true)">⇄ Inversées</button>`:""}${n1+n2?`<button onclick="SS.sel={};render()">✕ Vider</button>`:""}</div>`:""}
     <button class="btn" style="width:100%;margin-top:12px;padding:13px;font-size:16px" ${ok?"":"disabled"} onclick="sessionCreate()">${ok?`Créer le match (${n1} vs ${n2})`:"Choisis 1 à 4 joueurs par équipe"}</button>
   </div>
   ${played.length?`<h3 style="margin-top:14px">Matchs joués</h3><div class="card">${played.map(tline).join("")}</div>`:""}`;
@@ -3137,24 +3338,24 @@ function vSession(){
 async function startSession(){
   const C=cfg(), name=document.getElementById("ssN").value.trim()||"Session";
   const T={id:uid(),kind:"session",name,status:"live",season:C.season,date:new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,10),teams:[],matches:[],matchMinutes:10,finalMinutes:10,scoreLimit:21,createdAt:Date.now()};
-  SS={tid:T.id,sel:{},q:"",direct:false,size:3,showAll:false}; await saveT(T); toast("Session démarrée : coche les joueurs présents"); mPresent();
+  SS={tid:T.id,sel:{},q:"",direct:false,size:3,showAll:false}; await saveT(T); toast("Session démarrée : les joueurs peuvent rentrer dedans depuis leur fiche",3500);
 }
 async function endSession(){
   const T=tournaments[SS.tid], todo=(T.matches||[]).filter(m=>!scored(m)).length;
   if(!await ask(`Terminer « ${T.name} » ?${todo?` Les ${todo} match(s) non joué(s) seront supprimés.`:""}`)) return;
-  const X=getT(SS.tid); const keep=new Set(); X.matches=X.matches.filter(scored); X.matches.forEach(m=>{keep.add(m.a);keep.add(m.b)}); X.teams=X.teams.filter(t=>keep.has(t.id)); X.status="done";
-  await saveT(X); await archiveTournament(X.id); toast("Session terminée"); go({v:"tournoi",id:X.id});
+  const X=getT(SS.tid); const keep=new Set(); X.matches=X.matches.filter(scored); X.matches.forEach(m=>{keep.add(m.a);keep.add(m.b)}); X.teams=X.teams.filter(t=>keep.has(t.id)); X.status="done"; X.present=[...sessPresent(X)];
+  await saveT(X); await archiveTournament(X.id); sessJoinsOf(X.id).forEach(k=>{delete SJOIN[k];delDoc("sessionJoin/"+k)}); toast("Session terminée"); go({v:"tournoi",id:X.id});
 }
 /* Nombre de matchs depuis la dernière participation (99 = n'a pas encore joué). */
 function sessionWait(T){
   const ms=(T.matches||[]), w={};
-  (T.present||[]).forEach(p=>{let last=-1;ms.forEach((m,i)=>{const a=teamOf(T,m.a),b=teamOf(T,m.b);if(a?.roster.includes(p)||b?.roster.includes(p))last=i});w[p]=last<0?99:ms.length-1-last});
+  sessPresent(T).forEach(p=>{let last=-1;ms.forEach((m,i)=>{const a=teamOf(T,m.a),b=teamOf(T,m.b);if(a?.roster.includes(p)||b?.roster.includes(p))last=i});w[p]=last<0?99:ms.length-1-last});
   return w;
 }
 const sessionBusy=T=>new Set((T.matches||[]).filter(m=>!scored(m)).flatMap(m=>[...(teamOf(T,m.a)?.roster||[]),...(teamOf(T,m.b)?.roster||[])]));
 function sessionRandom(){
   const T=tournaments[SS.tid], busy=sessionBusy(T), w=sessionWait(T);
-  const avail=(T.present||[]).filter(p=>players[p]&&!busy.has(p));
+  const avail=[...sessPresent(T)].filter(p=>!busy.has(p));
   if(avail.length<2) return toast("Pas assez de joueurs disponibles");
   const sh=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
   const n=Math.min(avail.length,SS.size*2);
@@ -3165,7 +3366,7 @@ function sessionRandom(){
   render();
 }
 function mPresent(){
-  const T=tournaments[SS.tid], cur=new Set(T.present||[]);
+  const T=tournaments[SS.tid], cur=sessPresent(T);
   const ids=Object.keys(players).sort((a,b)=>(cur.has(b)-cur.has(a))||players[a].name.localeCompare(players[b].name));
   modal(`<h3>Joueurs présents</h3><div class="muted" style="margin-bottom:8px">Touchez pour cocher ou décocher. <b id="pcnt">${cur.size}</b> présent(s).</div>
   <input placeholder="Rechercher…" oninput="const q=normName(this.value);document.querySelectorAll('#pChips .ss-chip').forEach(c=>c.style.display=c.dataset.n.includes(q)?'':'none')">
@@ -3183,7 +3384,7 @@ async function presentAddPlayer(){
 }
 async function savePresent(){
   const ids=[...document.querySelectorAll("#pChips .pres")].map(b=>b.dataset.id);
-  closeModal(); const T=getT(SS.tid); T.present=ids; SS.showAll=false; await saveT(T); toast(`${ids.length} joueur(s) présent(s)`);
+  closeModal(); SS.showAll=false; await sessSetPresent(SS.tid,ids); toast(`${ids.length} joueur(s) présent(s)`);
 }
 function sessionPick(id){SS.sel[id]=((SS.sel[id]||0)+1)%3;if(!SS.sel[id])delete SS.sel[id];render()}
 function sessionSame(mid,swap){const T=tournaments[SS.tid],m=T.matches.find(x=>x.id===mid);SS.sel={};teamOf(T,m.a).roster.forEach(p=>SS.sel[p]=swap?2:1);teamOf(T,m.b).roster.forEach(p=>SS.sel[p]=swap?1:2);render()}
@@ -3191,7 +3392,7 @@ async function sessionAddPlayer(){
   const r=npRead("ssN"); if(!r) return; const n=r.name, g=document.getElementById("ssG").value; npClear("ssN");
   const id=uid(); SS.sel[id]=(Object.values(SS.sel).filter(v=>v===1).length<=Object.values(SS.sel).filter(v=>v===2).length)?1:2;
   await saveP(id,{...r,g,createdAt:Date.now()}); toast(n+" ajouté(e)");
-  const T=getT(SS.tid); if(T.present&&!T.present.includes(id)){T.present.push(id);await saveT(T)}
+  const T=getT(SS.tid); if(!sessPresent(T).has(id)){T.present=[...(T.present||[]),id];await saveT(T)}
 }
 async function sessionCreate(){
   const T=getT(SS.tid), r1=Object.keys(SS.sel).filter(k=>SS.sel[k]===1), r2=Object.keys(SS.sel).filter(k=>SS.sel[k]===2);
@@ -3218,14 +3419,27 @@ async function sessionSaveScore(mid){
   closeModal(); if(await commitScore(SS.tid,mid,a,b,null,null)) toast("Résultat enregistré");
 }
 async function sessionDel(mid){if(!await ask("Supprimer ce match ?"))return;const T=getT(SS.tid),m=T.matches.find(x=>x.id===mid);T.matches=T.matches.filter(x=>x.id!==mid);T.teams=T.teams.filter(t=>t.id!==m.a&&t.id!==m.b);await saveT(T)}
-function tabJoueursSession(T,R,A,c){
-  const ids=[...new Set((T.teams||[]).flatMap(t=>t.roster))].filter(p=>st[p]?.byT[T.id]);
-  const row=p=>{const L=st[p].log.filter(l=>l.tid===T.id),w=L.filter(l=>l.res===1).length,n=L.filter(l=>l.res===.5).length;return{p,g:L.length,w,n,l:L.length-w-n,t:st[p].byT[T.id].total}};
-  const rows=ids.map(row).sort((a,b)=>b.t-a.t||b.w-a.w);
-  c.innerHTML=rows.length?`<div class="card lb">${rows.map((r,i)=>`<div class="lbr" onclick="go({v:'joueur',id:'${r.p}'})"><div class="rkc"><div class="rank" style="background:none;color:var(--mut)">${i+1}</div></div><div class="lbn"><b>${esc(players[r.p].name)}</b><small>${r.g} match${r.g>1?"s":""} · ${rec(r.w,r.n,r.l)}</small></div><div class="ptc"><div class="pts" style="font-size:20px">${r.t>0?"+":""}${r.t}</div><span class="mv">pts</span></div></div>`).join("")}</div>
-  <div class="muted">Points gagnés ou perdus pendant la session (pas de bonus en session).</div>`:`<div class="empty">Aucun match joué.</div>`;
+function sessRanking(T,R){
+  /* Classement de la session : joueurs avec au moins 1 match, flèches vs classement avant le dernier match */
+  const mine=new Set((T.matches||[]).map(m=>m.id));
+  const mids=Object.keys(R.matchInfo||{}).filter(id=>mine.has(id)&&R.matchInfo[id].pl);
+  const last=mids[mids.length-1], lastPl=last?R.matchInfo[last].pl:{};
+  const ids=[...new Set((T.teams||[]).flatMap(t=>t.roster))].filter(p=>st[p]?.byT[T.id]?.games>0);
+  const row=p=>{const L=st[p].log.filter(l=>l.tid===T.id),w=L.filter(l=>l.res===1).length,n=L.filter(l=>l.res===.5).length;return{p,g:L.length,w,n,l:L.length-w-n,t:st[p].byT[T.id].match}};
+  const cmp=(a,b)=>b.t-a.t||b.w-a.w||a.g-b.g||pCall(a.p).localeCompare(pCall(b.p));
+  const rows=ids.map(row).sort(cmp);
+  /* classement juste avant le dernier match */
+  const prev=rows.map(r=>{const x=lastPl[r.p];return x?{...r,t:r.t-x.d,g:r.g-1,w:r.w-(R.matchInfo[last]&&st[r.p].log.find(l=>l.mid===last)?.res===1?1:0)}:r}).filter(r=>r.g>0).sort(cmp);
+  const prank={}; prev.forEach((r,i)=>prank[r.p]=i+1);
+  return {rows,prank,last,lastPl,mids};
 }
-
+function tabJoueursSession(T,R,A,c){
+  const {rows,prank,last,lastPl,mids}=sessRanking(T,R);
+  const mv=(p,i)=>{if(!last||mids.length<2&&!prank[p]) return "";if(!prank[p]) return `<span class="sr-mv new">NEW</span>`;const d=prank[p]-(i+1);return d>0?`<span class="sr-mv up">▲${d}</span>`:d<0?`<span class="sr-mv dn">▼${-d}</span>`:`<span class="sr-mv eq">=</span>`};
+  const lm=last&&(T.matches||[]).find(m=>m.id===last), la=lm&&teamOf(T,lm.a), lb=lm&&teamOf(T,lm.b);
+  c.innerHTML=rows.length?`<div class="card lb">${rows.map((r,i)=>`<div class="lbr" onclick="go({v:'joueur',id:'${r.p}'})"><div class="rkc"><div class="rank" style="background:none;color:var(--mut)">${i+1}</div>${mv(r.p,i)}</div><div class="lbn sr-n"><div class="sr-av">${avatarHTML(r.p,30)}<small>${Math.round(st[r.p]?.pts||0)} pts</small></div><div style="min-width:0"><b>${esc(pCall(r.p))}</b><small>${r.g} match${r.g>1?"s":""} · ${rec(r.w,r.n,r.l)}</small></div></div><div class="ptc"><div class="pts" style="font-size:20px;color:${r.t>0?"#58d68d":r.t<0?"var(--loss)":"inherit"}">${r.t>0?"+":""}${r.t}</div><span class="mv">pts</span></div></div>`).join("")}</div>
+  <div class="muted sr-leg">Points gagnés ou perdus pendant la session.<br>Évolution depuis le dernier match : <span class="up">▲ monte</span> · <span class="dn">▼ descend</span> · <span class="eq">= stable</span> · <span><span class="new">NEW</span> 1<sup>er</sup> match</span></div>`:`<div class="empty">Aucun match joué.</div>`;
+}
 function mRenameSession(id){const T=tournaments[id];modal(`<h3>Modifier la session</h3><label>Nom</label><input id="rsN" value="${esc(T.name)}"><label>Date</label><input id="rsD" type="date" value="${esc(T.date||"")}">
   <div class="muted" style="margin-top:6px">Changer la date replace la session dans l'historique : les points sont recalculés dans le bon ordre.</div>
   <div class="row" style="margin-top:14px"><button class="btn" onclick="saveSessionEdit('${id}')">Enregistrer</button><button class="btn sec" onclick="closeModal()">Annuler</button></div>`)}
@@ -3279,7 +3493,7 @@ function nextMatchHTML(T){
 /* ---------- Équipes équilibrées (session) ---------- */
 function sessionBalanced(){
   const T=tournaments[SS.tid], busy=sessionBusy(T), w=sessionWait(T), C=cfg();
-  const avail=(T.present||[]).filter(p=>players[p]&&!busy.has(p));
+  const avail=[...sessPresent(T)].filter(p=>!busy.has(p));
   if(avail.length<2) return toast("Pas assez de joueurs disponibles");
   const sh=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
   const n=Math.min(avail.length,SS.size*2), picked=sh(avail).sort((a,b)=>w[b]-w[a]).slice(0,n);
