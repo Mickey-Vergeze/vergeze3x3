@@ -318,7 +318,7 @@ body.sp-dragging .sp-door{border-color:#e74c3c;background:rgba(231,76,60,.08);tr
 .ms-r{flex:none;width:22px;height:22px;border-radius:6px;display:grid;place-items:center;font:700 12px Inter;color:#fff}
 .ms-r.w{background:#2ecc71}.ms-r.l{background:#e74c3c}.ms-r.n{background:#7f8c8d}
 .ms-now{margin-top:10px;font-size:13px}
-.wl-top{font-size:42px;text-align:center}
+.wl-logos{display:flex;justify-content:center;align-items:center;gap:22px;margin:2px 0 4px}.wl-logos img{height:72px;width:auto;object-fit:contain;filter:drop-shadow(0 4px 10px rgba(0,0,0,.5))}
 .wl-box{background:rgba(255,138,0,.08);border:1px solid rgba(255,138,0,.35);border-radius:12px;padding:10px 12px;margin-top:8px}
 .wl-box.guest{background:rgba(255,255,255,.03);border-color:var(--line)}
 .wl-box ul{margin:6px 0 0;padding-left:4px;list-style:none;font-size:13px;line-height:1.7}
@@ -3203,13 +3203,14 @@ function welcomeMaybe(){
   if(!isSite()||FBUSER||lsGet("welcome-seen")) return;
   if(document.getElementById("modal")?.classList.contains("on")) return;
   lsSet("welcome-seen",1);
-  modal(`<div class="wl-top">🏀</div><h3 style="text-align:center;margin-top:4px">Bienvenue sur la Vergèze Ligue 3x3</h3>
+  const src=c=>document.querySelector("img."+c)?.src||"";
+  modal(`<div class="wl-logos"><img src="${src("logo")}" alt="Vergèze Ligue 3x3"><img src="${src("clublogo")}" alt="Vergèze Basket Club"></div><h3 style="text-align:center;margin-top:4px">Bienvenue sur la Vergèze Ligue 3x3</h3>
   <div class="muted" style="text-align:center;margin-bottom:12px">Le classement, les tournois et les sessions du Vergèze Basket Club.</div>
-  <div class="wl-box"><b>Avec un compte</b><ul>
+  <div class="wl-box"><b>Crée un compte pour</b><ul>
     <li>🎴 Ta fiche joueur : niveau, exploits, icône de profil</li>
     <li>🏀 Rentrer dans les sessions en cours</li>
     <li>📝 Inscrire ton équipe aux tournois</li></ul></div>
-  <div class="wl-box guest"><b>En invité</b><ul><li>👀 Suivre les résultats et les classements</li></ul></div>
+  <div class="wl-box guest"><b>Reste en invité</b><ul><li>👀 Juste pour suivre les résultats</li></ul></div>
   <button class="btn" style="width:100%;margin-top:12px;padding:13px" onclick="closeModal();mRole()">Se connecter / Créer un compte</button>
   <button class="btn sec" style="width:100%;margin-top:8px" onclick="closeModal();toast('Tu pourras te connecter quand tu veux avec 👤 en haut à droite',4500)">Continuer en invité</button>`);
 }
