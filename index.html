@@ -333,6 +333,7 @@ body.sp-dragging .sp-door{border-color:#e74c3c;background:rgba(231,76,60,.08);tr
 .pv-b{flex:1;background:linear-gradient(90deg,#0ea5e9,#38bdf8);color:#04202e;justify-content:flex-end;padding-right:8px}
 .pv-n{display:flex;justify-content:space-between;gap:10px;font-size:11px;margin-top:3px}.pv-n span{max-width:48%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.pv-n .ca{color:#ffb15c}.pv-n .cb{color:#7dd3fc;text-align:right}
 .pls-a{border-left:3px solid #ff8a00;padding-left:8px}.pls-b{border-left:3px solid #38bdf8;padding-left:8px}
+.lm-l{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--mut)}.lm-l input{width:52px;text-align:center}
 .sj-go{flex:1 1 100%;padding:12px;font-size:15px}
 .sj-ic{font-size:26px;animation:sjb 1.4s ease-in-out infinite}
 @keyframes sjb{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
@@ -798,7 +799,7 @@ function compute(Cin){MEMO={};
         s.mmr+=dm; s.games++; s.gamesAll++; if(won){s.wins++;s.winsAll++} if(S===.5)s.draws=(s.draws||0)+1;
         const before=s.pts; s.pts=Math.max(0,s.pts+d);
         const real=s.pts-before; s.byT[T.id].match+=real; s.byT[T.id].games++; info.pl[pid]={d:real,dm,E};
-        s.log.push({tid:T.id,mid:m.id,round:m.round,stage:m.stage,opp:opp.name,me,op,won,res:S,d:real,E,dm});
+        s.log.push({tid:T.id,mid:m.id,round:m.round,stage:m.stage,opp:opp.name,me,op,won,res:S,d:real,E,dm,lim:limOf(T,m)});
       });if(ds.length)info[key]=Math.round(ds.reduce((a,b)=>a+b,0)/ds.length)};
       upd(A,B,fA,fB,SA,m.sa,m.sb,"dA"); upd(B,A,fB,fA,1-SA,m.sb,m.sa,"dB");
     });
@@ -1293,14 +1294,15 @@ function playerStats(pid){
       const A=teamOf(T,m.a),B=teamOf(T,m.b); if(!A||!B) continue;
       const inA=A.roster.includes(pid), inB=B.roster.includes(pid); if(!inA&&!inB) continue;
       const me=inA?m.sa:m.sb, op=inA?m.sb:m.sa, mine=inA?A:B, them=inA?B:A, d=me-op, r=d>0?"w":d<0?"l":"n";
-      out.g++; out[r]++; out.pf+=me; out.pa+=op;
+      const k=k21(T,m), dn=d*k;
+      out.g++; out[r]++; out.pf+=me*k; out.pa+=op*k;
       if(r==="w"){streak=streak>0?streak+1:1}else if(r==="l"){streak=streak<0?streak-1:-1}else streak=0;
       if(streak>out.best) out.best=streak;
       if(Math.abs(d)<=2){out.close[r]++}
       if(d>0&&(!out.big||d>out.big.d)) out.big={d,me,op,opp:them.name,tid:T.id,mid:m.id};
       const st_=m.stage==="bracket"?"finale":m.stage==="session"?"session":"groupe"; out.stage[st_].g++; if(r==="w")out.stage[st_].w++;
-      them.roster.forEach(o=>{if(!players[o])return;const x=out.opp[o]||(out.opp[o]={g:0,d:0,w:0,l:0,n:0});x.g++;x.d+=d;x[r]++});
-      mine.roster.forEach(o=>{if(o===pid||!players[o])return;const x=out.mate[o]||(out.mate[o]={g:0,d:0,w:0});x.g++;x.d+=d;if(r==="w")x.w++});
+      them.roster.forEach(o=>{if(!players[o])return;const x=out.opp[o]||(out.opp[o]={g:0,d:0,w:0,l:0,n:0});x.g++;x.d+=dn;x[r]++});
+      mine.roster.forEach(o=>{if(o===pid||!players[o])return;const x=out.mate[o]||(out.mate[o]={g:0,d:0,w:0});x.g++;x.d+=dn;if(r==="w")x.w++});
     }
     const b=st[pid]?.byT?.[T.id]; if(b&&!isSession(T)&&(!out.bestT||b.total>out.bestT.total)) out.bestT={tid:T.id,name:T.name,total:b.total,place:b.place};
   }
@@ -1316,21 +1318,21 @@ function playerStatsHTML(pid){
   const S=playerStats(pid); if(!S.g) return "";
   const pn=id=>`<a class="lk" onclick="go({v:'joueur',id:'${id}'})">${esc(players[id].name.replace(/\s*\(démo\)/i,""))}</a>`;
   const pm=v=>`${v>0?"+":""}${v}`, dec=v=>v.toFixed(1).replace(".",","), pct=(w,g)=>g?Math.round(w/g*100)+"%":"–";
-  const diff=S.pf-S.pa;
-  const TIPS={"Matchs":"Nombre total de matchs joués, en tournoi et en session.","Victoires":"Part des matchs gagnés sur tous les matchs joués.","+/- total":"Points marqués moins points encaissés par son équipe, additionnés sur tous ses matchs.","Moy. off":"Moyenne de points marqués par son équipe à chaque match.","Moy. déf":"Moyenne de points encaissés par son équipe à chaque match : plus c'est bas, mieux c'est.","Moy. +/-":"Écart moyen au score par match : positif, il gagne en moyenne ses matchs de ce nombre de points.",
+  const diff=Math.round(S.pf-S.pa);
+  const TIPS={"Matchs":"Nombre total de matchs joués, en tournoi et en session.","Victoires":"Part des matchs gagnés sur tous les matchs joués.","+/- total":"Points marqués moins points encaissés par son équipe, additionnés sur tous ses matchs.","Moy. off":"Moyenne de points marqués par son équipe à chaque match, ramenée sur un match à 21 (un 12-8 en match à 12 compte comme 21-14).","Moy. déf":"Moyenne de points encaissés par son équipe à chaque match, ramenée sur un match à 21 : plus c'est bas, mieux c'est.","Moy. +/-":"Écart moyen au score par match : positif, il gagne en moyenne ses matchs de ce nombre de points.",
     "Némésis":"L'adversaire contre qui il a perdu le plus de points au total.","Rival":"L'adversaire qu'il a affronté le plus souvent.","Meilleur coéquipier":"Le partenaire avec qui il a le meilleur pourcentage de victoires.","Série en cours":"Nombre de victoires (V) ou de défaites (D) d'affilée sur ses derniers matchs.","Matchs serrés":"Son bilan dans les matchs finis avec 2 points d'écart ou moins.","Plus large victoire":"Le match qu'il a gagné avec le plus gros écart.","Meilleur tournoi":"Le tournoi où il a gagné le plus de points au classement.","Victoires par phase":"Son pourcentage de victoires en phase de groupes, en phase finale et en session."};
   const tip=l=>TIPS[l]?` data-tip="${esc(TIPS[l])}"`:"";
   const cell=(v,l,cls="")=>`<div class="sg-c"${tip(l)}><b class="${cls}">${v}</b><small>${l}<i class="ti-i">i</i></small></div>`;
   const row=(ic,label,val,sub="",click="")=>`<div class="ps-row" ${click?`onclick="${click}" style="cursor:pointer"`:""}><span class="ps-ic">${ic}</span><span class="ps-l"${tip(label)}>${label}<i class="ti-i">i</i></span><span class="ps-v">${val}${sub?`<small>${sub}</small>`:""}</span></div>`;
   const none='<span class="muted">—</span>';
   const opp=(e,f)=>e?[pn(e[0]),f(e[1])]:[none,""];
-  const n=opp(S.nemesis,x=>`${pm(x.d)} pts · ${x.w}V-${x.l}D`), r=opp(S.rival,x=>`${x.g} matchs · ${x.w}V-${x.l}D`), d=opp(S.duo,x=>`${pct(x.w,x.g)} de victoires · ${x.g} matchs`);
+  const n=opp(S.nemesis,x=>`${pm(Math.round(x.d))} pts · ${x.w}V-${x.l}D`), r=opp(S.rival,x=>`${x.g} matchs · ${x.w}V-${x.l}D`), d=opp(S.duo,x=>`${pct(x.w,x.g)} de victoires · ${x.g} matchs`);
   const streak=S.cur>0?`<b class="w">${S.cur} V</b>`:S.cur<0?`<b class="l">${-S.cur} D</b>`:none;
   const phases=["groupe","finale","session"].filter(k=>S.stage[k].g).map(k=>`${k==="groupe"?"Groupes":k==="finale"?"Finales":"Sessions"} ${pct(S.stage[k].w,S.stage[k].g)}`).join(" · ");
   return `<div class="ps-sec">Statistiques <span>carrière</span></div>
   <div class="card sg">
     ${cell(S.g,"Matchs")}${cell(pct(S.w,S.g),"Victoires")}${cell(pm(diff),"+/- total",diff<0?"neg":"")}
-    ${cell(dec(S.pf/S.g),"Moy. off")}${cell(dec(S.pa/S.g),"Moy. déf")}${cell(pm(+dec(diff/S.g).replace(",",".")).replace(".",","),"Moy. +/-",diff<0?"neg":"")}
+    ${cell(dec(S.pf/S.g),"Moy. off")}${cell(dec(S.pa/S.g),"Moy. déf")}${cell(pm(+dec((S.pf-S.pa)/S.g).replace(",",".")).replace(".",","),"Moy. +/-",diff<0?"neg":"")}
   </div>
   <div class="ps-sec">Face à face</div>
   <div class="card ps">
@@ -1497,7 +1499,7 @@ function matchCard(T,R,A,m){
   const side=(team,isA)=>team.roster.map(pid=>{const d=i?.pl?.[pid];return `<div class="pl"><span>${pname(pid)}</span>${d?`<span>${sign(d.d)}${A?` <span class="muted" style="font-size:11px">${Math.round(d.E*100)}% · MMR ${d.dm>0?"+":""}${Math.round(d.dm)}</span>`:""}</span>`:""}</div>`}).join("");
   const aw=s&&m.sa>m.sb;
   return `<div class="card mcard" id="m-${m.id}">
-    <div class="muted" style="font-size:12px">${esc(m.round)}${m.time?" · "+esc(m.time):""}${m.court?" · Terrain "+esc(m.court):""}</div>
+    <div class="muted" style="font-size:12px">${esc(m.round)}${isSession(T)||limOf(T,m)!==21?` · 🎯 en ${limOf(T,m)} pts`:""}${m.time?" · "+esc(m.time):""}${m.court?" · Terrain "+esc(m.court):""}</div>
     <div class="mhead"><span class="ta ${aw?"bold":""}">${esc(a.name)}<br><span class="muted" style="font-weight:400">${comp(a.roster)}</span></span>
       <span class="sc">${s?`<span class="sa">${m.sa}</span><span class="muted"> - </span><span class="sb">${m.sb}</span>`:'<span class="muted" style="font:500 14px Inter">à jouer</span>'}</span>
       <span class="tb ${s&&m.sb>m.sa?"bold":""}" style="text-align:right">${esc(b.name)}<br><span class="muted" style="font-weight:400">${comp(b.roster)}</span></span></div>
@@ -1511,7 +1513,7 @@ function matchCard(T,R,A,m){
     ${A?`${s?`<details class="medit-d"><summary>✎ Corriger</summary>`:""}<div class="meditor"><div class="teams"><span class="muted" style="font-size:12px">Score</span>
         <input id="sa-${m.id}" inputmode="numeric" value="${s?m.sa:""}" placeholder="–"><span class="muted" style="text-align:center">-</span>
         <input id="sb-${m.id}" inputmode="numeric" value="${s?m.sb:""}" placeholder="–"><span></span></div>
-      <div class="meta"><input id="tm-${m.id}" value="${esc(m.time||"")}" placeholder="Heure"><input id="ct-${m.id}" value="${esc(m.court||"")}" placeholder="Terrain">
+      <div class="meta">${isSession(T)?`<label class="lm-l">🎯 Match en<input id="lm-${m.id}" inputmode="numeric" value="${limOf(T,m)}"> pts</label><input id="tm-${m.id}" type="hidden" value="${esc(m.time||"")}"><input id="ct-${m.id}" type="hidden" value="${esc(m.court||"")}">`:`<input id="tm-${m.id}" value="${esc(m.time||"")}" placeholder="Heure"><input id="ct-${m.id}" value="${esc(m.court||"")}" placeholder="Terrain">`}
         <button class="btn sm" style="margin-left:auto" onclick="saveMatch('${T.id}','${m.id}')">Enregistrer</button>
         <button class="btn sm dng" onclick="delMatch('${T.id}','${m.id}')">✕</button></div></div>${s?"</details>":""}`:""}
   </div>`;
@@ -1914,6 +1916,9 @@ async function saveMatch(tid,mid){
     if(a===b&&tournaments[tid].matches.find(x=>x.id===mid)?.stage==="bracket") return toast("Pas de match nul en phase finale : prolongation");}
   document.activeElement?.blur();
   const inModal=!!document.querySelector("#mbox #sa-"+mid);
+  const lmE=document.getElementById("lm-"+mid);
+  if(lmE){const lim=parseInt(lmE.value,10);if(!Number.isFinite(lim)||lim<5||lim>50)return toast("Objectif de points invalide (5 à 50)");
+    const X=getT(tid),mm=X.matches.find(x=>x.id===mid);if(mm&&mm.lim!==lim){mm.lim=lim;await saveT(X)}}
   if(await commitScore(tid,mid,a,b,v("tm"),v("ct"))){toast("Match enregistré");if(inModal)closeModal()}
 }
 
@@ -2701,8 +2706,8 @@ const ACH=[
   {k:"s5",ico:"x5",n:"En feu",d:"5 victoires d'affilée",t:s=>bestStreak(s)>=5},
   {k:"s10",ico:"x6",n:"Inarrêtable",d:"10 victoires d'affilée",t:s=>bestStreak(s)>=10},
   {k:"upset",ico:"x7",n:"Exploit",d:"Battre une équipe largement favorite (moins de 30 % de chances)",t:s=>(s.log||[]).some(l=>l.won&&l.E<.3)},
-  {k:"crush",ico:"x8",n:"Rouleau compresseur",d:"Gagner un match avec 10 points d'écart ou plus",t:s=>(s.log||[]).some(l=>l.won&&l.me-l.op>=10)},
-  {k:"wall",ico:"x9",n:"Le Mur",d:"Gagner un match en encaissant 5 points ou moins",t:s=>(s.log||[]).some(l=>l.won&&l.op<=5)},
+  {k:"crush",ico:"x8",n:"Rouleau compresseur",d:"Gagner un match avec 10 points d'écart ou plus (sur un match à 21)",t:s=>(s.log||[]).some(l=>l.won&&(l.me-l.op)*21/(l.lim||21)>=10)},
+  {k:"wall",ico:"x9",n:"Le Mur",d:"Gagner un match en encaissant 5 points ou moins (sur un match à 21)",t:s=>(s.log||[]).some(l=>l.won&&l.op*21/(l.lim||21)<=5)},
   {k:"pg",ico:"x15",n:"Playground",d:"Participer à une session",t:s=>(s.sessAll||0)>=1},
   {k:"loyal",ico:"x10",n:"Fidèle",d:"Participer à 10 tournois ou sessions",t:s=>(s.tournAll||0)+(s.sessAll||0)>=10},
   {k:"cent",ico:"x11",n:"Centurion",d:"Jouer 100 matchs",t:s=>s.gamesAll>=100},
@@ -3506,7 +3511,7 @@ async function sessionCreate(){
   const T=getT(SS.tid), r1=Object.keys(SS.sel).filter(k=>SS.sel[k]===1), r2=Object.keys(SS.sel).filter(k=>SS.sel[k]===2);
   const tn=r=>r.map(firstName).join(", ");
   const A={id:uid(),name:tn(r1),pool:null,roster:r1}, B={id:uid(),name:tn(r2),pool:null,roster:r2};
-  const m={id:uid(),stage:"session",round:"Match "+((T.matches||[]).length+1),a:A.id,b:B.id,sa:null,sb:null,time:"",court:""};
+  const m={id:uid(),stage:"session",round:"Match "+((T.matches||[]).length+1),a:A.id,b:B.id,sa:null,sb:null,time:"",court:"",lim:T.scoreLimit??21};
   T.teams.push(A,B); T.matches.push(m); SS.sel={}; SS.q="";
   await saveT(T);
   modal(`<div class="tm-confirm"><div class="muted">${esc(m.round)}</div><div class="tm-cname" style="font-size:24px">${esc(A.name)}</div><div class="tm-cw">contre</div><div class="tm-cname" style="font-size:24px">${esc(B.name)}</div>
@@ -3647,10 +3652,10 @@ function duelData(a,b){
       const aSide=A.roster.includes(a)?"A":B.roster.includes(a)?"B":null, bSide=A.roster.includes(b)?"A":B.roster.includes(b)?"B":null;
       if(!aSide||!bSide)continue;
       const me=aSide==="A"?m.sa:m.sb, op=aSide==="A"?m.sb:m.sa, d=me-op, r=d>0?"w":d<0?"l":"n";
-      const o=aSide===bSide?tog:vs; o.g++;o[r]++;o.d+=d;
+      const o=aSide===bSide?tog:vs; o.g++;o[r]++;o.d+=d*k21(T,m);
       if(o===vs) vs.list.push({T,m,me,op,mine:aSide==="A"?A:B,them:aSide==="A"?B:A});
     }}
-  vs.list.reverse(); return {vs,tog};
+  vs.d=Math.round(vs.d); tog.d=Math.round(tog.d); vs.list.reverse(); return {vs,tog};
 }
 function vDuel(){
   const ids=Object.keys(players).filter(id=>st[id]?.gamesAll>0).sort((x,y)=>players[x].name.localeCompare(players[y].name));
@@ -3679,8 +3684,9 @@ function seasonPlayerStats(season){
   const C=cfg(), out={};
   for(const T of sortedTournaments()){if(seasonOf(T,C)!==season)continue;const R=RES[T.id];if(!R)continue;
     for(const m of (T.matches||[])){if(!scored(m)||!R.matchInfo[m.id])continue;const A=teamOf(T,m.a),B=teamOf(T,m.b);if(!A||!B)continue;
+      const k=k21(T,m);
       [[A,m.sa,m.sb],[B,m.sb,m.sa]].forEach(([tm,me,op])=>tm.roster.forEach(p=>{if(!players[p])return;const o=out[p]||(out[p]={g:0,w:0,pf:0,pa:0,close:0,cur:0,best:0});
-        o.g++;o.pf+=me;o.pa+=op;if(me>op){o.w++;o.cur++;o.best=Math.max(o.best,o.cur);if(me-op<=2)o.close++}else o.cur=0}))}}
+        o.g++;o.pf+=me*k;o.pa+=op*k;if(me>op){o.w++;o.cur++;o.best=Math.max(o.best,o.cur);if(me-op<=2)o.close++}else o.cur=0}))}}
   return out;
 }
 function trophiesHTML(g){
@@ -3692,7 +3698,7 @@ function trophiesHTML(g){
   const T=[
     ["🎯","Meilleure attaque","Plus haute moyenne de points marqués par match",top(el,p=>S[p].pf/S[p].g),p=>(S[p].pf/S[p].g).toFixed(1).replace(".",",")+" pts/m"],
     ["🛡️","Meilleure défense","Plus basse moyenne de points encaissés par match",top(el,p=>-S[p].pa/S[p].g),p=>(S[p].pa/S[p].g).toFixed(1).replace(".",",")+" pts/m"],
-    ["📈","Meilleur +/-","Plus grand écart cumulé (marqués − encaissés)",top(el,p=>S[p].pf-S[p].pa),p=>{const d=S[p].pf-S[p].pa;return (d>0?"+":"")+d}],
+    ["📈","Meilleur +/-","Plus grand écart cumulé (marqués − encaissés)",top(el,p=>S[p].pf-S[p].pa),p=>{const d=Math.round(S[p].pf-S[p].pa);return (d>0?"+":"")+d}],
     ["🧊","Roi des matchs serrés","Le plus de victoires avec 2 points d'écart ou moins",top(ids,p=>S[p].close),p=>S[p].close+" victoire"+(S[p].close>1?"s":"")],
     ["🔥","Plus longue série","Le plus de victoires d'affilée",top(ids,p=>S[p].best),p=>S[p].best+" V d'affilée"],
     ["📅","Le plus assidu","Le plus de matchs joués",top(ids,p=>S[p].g),p=>S[p].g+" matchs"]];
@@ -3702,6 +3708,9 @@ function trophiesHTML(g){
 }
 
 /* ---------- Doublons & fusion de joueurs ---------- */
+/* Objectif de points d'un match (session : fixé à la création) ; stats ramenées sur un match à 21 */
+const limOf=(T,m)=>+(m&&m.lim)||+(T&&T.scoreLimit)||21;
+const k21=(T,m)=>21/limOf(T,m);
 /* Identité = prénom + nom (obligatoires) ; affichage = pseudo s'il existe */
 const pFull=p=>p?((p.first||p.last)?`${p.first||""} ${p.last||""}`.trim():String(p.name||"").replace(/\s*\(démo\)/i,"")):"";
 const pCall=id=>{const p=players[id];if(!p)return "Joueur supprimé";return p.nick||p.first||String(p.name||"?").replace(/\s*\(démo\)/i,"").split(" ")[0]};
